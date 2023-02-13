@@ -3,7 +3,7 @@ import { IconHeadphones, IconStar } from '@tabler/icons';
 import { Box, Group, NavLink, Text } from '@mantine/core';
 import { HymnsIndex } from '../../schemas/hymnsIndex';
 
-function HymnsList({ hymnsIndex }: { hymnsIndex: HymnsIndex[] }) {
+function HymnsList({ hymnsIndex }: { hymnsIndex: HymnsIndex }) {
   const [active, setActive] = useState(0);
 
   const items = hymnsIndex.map((item, index) => (

@@ -3,7 +3,7 @@ import HymnsList from '../components/HymnsList/HymnsList';
 import { storage } from '../firebase';
 import { HymnsIndex, hymnsIndexSchema } from '../schemas/hymnsIndex';
 
-export default function Home({ hymnsIndex }: { hymnsIndex: HymnsIndex[] }) {
+export default function Home({ hymnsIndex }: { hymnsIndex: HymnsIndex }) {
   return <HymnsList hymnsIndex={hymnsIndex} />;
 }
 
