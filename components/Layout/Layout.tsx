@@ -10,14 +10,17 @@ import {
   useMantineTheme,
   Container,
   Button,
+  Breadcrumbs,
 } from '@mantine/core';
 
 import VerticalNavigation from '../VerticalNavigation/VerticalNavigation';
 import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
+import { useRouter } from 'next/router';
 
 export default function AppShell({ children }: PropsWithChildren) {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
+
   return (
     <MantineAppShell
       styles={{

@@ -1,12 +1,17 @@
 import { useState } from 'react';
 import { IconHeadphones, IconStar } from '@tabler/icons';
-import { Box, Group, NavLink, Text } from '@mantine/core';
+import { Box, Button, Group, NavLink, Text } from '@mantine/core';
+import Link from 'next/link';
 import { HymnsIndex } from '../../schemas/hymnsIndex';
 
 function HymnsList({ hymnsIndex }: { hymnsIndex: HymnsIndex }) {
+  const [showAll, setShowAll] = useState(false);
+
+  const toggleShowAll = () => setShowAll((currentValue) => !currentValue);
+
   const [active, setActive] = useState(0);
 
-  const items = hymnsIndex.map((item, index) => (
+  const items = hymnsIndex.slice(0, showAll ? undefined : 20).map((item, index) => (
     <NavLink
       key={item.number}
       active={index === active}
@@ -24,12 +29,19 @@ function HymnsList({ hymnsIndex }: { hymnsIndex: HymnsIndex }) {
         </Text>
       }
       onClick={() => setActive(index)}
-      component="a"
+      component={Link}
       href={`hinos-e-canticos/${item.slug}`}
     />
   ));
 
-  return <Box>{items}</Box>;
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+      {items}
+      <Button variant="outline" sx={{ alignSelf: 'center' }} my={16} onClick={toggleShowAll}>
+        {showAll ? 'Mostrar menos' : 'Mostrar tudo'}
+      </Button>
+    </Box>
+  );
 }
 
 export default HymnsList;
