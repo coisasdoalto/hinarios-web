@@ -5,7 +5,7 @@ import { hymnSchema } from '../schemas/hymn';
 async function generateHymnsIndex() {
   const bucket = storage.bucket();
 
-  const [files] = await bucket.getFiles({ prefix: 'hinos-e-canticos/' });
+  const [files] = await bucket.getFiles({ prefix: 'hinos-espirituais/' });
 
   const hymns = (
     await Promise.all(

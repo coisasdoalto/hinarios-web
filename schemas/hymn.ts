@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const hymnSchema = z.object({
-  number: z.number(),
+  number: z.number().or(z.string()),
   title: z.string(),
   subtitle: z.string().optional(),
   stanzas: z.array(

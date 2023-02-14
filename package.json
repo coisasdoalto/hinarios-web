@@ -17,7 +17,8 @@
     "test": "npm run prettier:check && npm run lint && npm run typecheck && npm run jest",
     "storybook": "start-storybook -p 7001",
     "storybook:build": "build-storybook",
-    "data:generate-index": "ts-node -O '{\"module\": \"commonjs\"}' scripts/generateHymnsIndex.ts"
+    "data:generate-index": "ts-node -O '{\"module\": \"commonjs\"}' scripts/generateHymnsIndex.ts",
+    "scripts:run": "ts-node -O '{\"module\": \"commonjs\"}'"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
