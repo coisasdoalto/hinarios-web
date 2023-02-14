@@ -1,13 +1,12 @@
 import { AppProps } from 'next/app';
-import { Button, Container, Space, Text, Title } from '@mantine/core';
+import { Container, Space, Text, Title } from '@mantine/core';
 import { GetStaticPaths, GetStaticProps } from 'next';
 
 import { Fragment } from 'react';
-import { useRouter } from 'next/router';
-import { IconChevronLeft } from '@tabler/icons';
 import { storage } from '../../firebase';
 import { Hymn, hymnSchema } from '../../schemas/hymn';
 import { hymnsIndexSchema } from '../../schemas/hymnsIndex';
+import BackButton from '../../components/BackButton/BackButton';
 
 const AddBreakLine = ({ children }: { children: string }) => (
   <>
@@ -25,21 +24,11 @@ export default function HymnView(props: AppProps & { content: Hymn }) {
     content: { number, title, subtitle, stanzas, chorus },
   } = props;
 
-  const router = useRouter();
-
   return (
     <Container size="xs">
       <Space h="md" />
 
-      <Button
-        leftIcon={<IconChevronLeft />}
-        color="gray"
-        variant="outline"
-        onClick={() => router.back()}
-        title="Voltar"
-      >
-        Voltar
-      </Button>
+      <BackButton />
 
       <Space h="md" />
 
@@ -80,7 +69,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   const hymnsIndex = hymnsIndexSchema.parse(JSON.parse(index[0].toString()));
 
-  const paths = hymnsIndex.map(({ slug }) => ({ params: { slug } }));
+  const paths = hymnsIndex.map(({ slug }) => ({ params: { hymnBook: 'hinos-e-canticos', slug } }));
 
   return {
     paths,

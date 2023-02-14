@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { IconHeadphones, IconStar } from '@tabler/icons';
-import { Box, Button, Group, NavLink, Text } from '@mantine/core';
+import { Box, Button, Group, NavLink, Space, Text, Title } from '@mantine/core';
 import Link from 'next/link';
 import { HymnsIndex } from '../../schemas/hymnsIndex';
+import BackButton from '../BackButton/BackButton';
 
 function HymnsList({ hymnsIndex }: { hymnsIndex: HymnsIndex }) {
   const [showAll, setShowAll] = useState(false);
@@ -35,12 +36,24 @@ function HymnsList({ hymnsIndex }: { hymnsIndex: HymnsIndex }) {
   ));
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-      {items}
-      <Button variant="outline" sx={{ alignSelf: 'center' }} my={16} onClick={toggleShowAll}>
-        {showAll ? 'Mostrar menos' : 'Mostrar tudo'}
-      </Button>
-    </Box>
+    <>
+      <Group>
+        <BackButton />
+
+        <Title order={1} size="h2">
+          Hinos e Cânticos
+        </Title>
+      </Group>
+
+      <Space h="lg" />
+
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        {items}
+        <Button variant="outline" sx={{ alignSelf: 'center' }} my={16} onClick={toggleShowAll}>
+          {showAll ? 'Mostrar menos' : 'Mostrar tudo'}
+        </Button>
+      </Box>
+    </>
   );
 }
 

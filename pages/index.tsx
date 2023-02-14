@@ -1,20 +1,14 @@
-import { GetStaticProps } from 'next';
-import HymnsList from '../components/HymnsList/HymnsList';
-import { storage } from '../firebase';
-import { HymnsIndex, hymnsIndexSchema } from '../schemas/hymnsIndex';
+import { Card, Group, Text } from '@mantine/core';
+import Link from 'next/link';
 
-export default function Home({ hymnsIndex }: { hymnsIndex: HymnsIndex }) {
-  return <HymnsList hymnsIndex={hymnsIndex} />;
+export default function Home() {
+  return (
+    <Group mt={16}>
+      <Card shadow="sm" p="xl" component={Link} href="/hinos-e-canticos">
+        <Text weight={500} size="lg" m={0}>
+          Hinos e Cânticos
+        </Text>
+      </Card>
+    </Group>
+  );
 }
-
-export const getStaticProps: GetStaticProps = async () => {
-  const bucket = storage.bucket();
-
-  const index = await bucket.file('hinos-e-canticos/index.json').download();
-
-  const hymnsIndex = hymnsIndexSchema.parse(JSON.parse(index[0].toString()));
-
-  return {
-    props: { hymnsIndex },
-  };
-};
