@@ -1,11 +1,10 @@
-import { useState } from 'react';
-import NextApp, { AppProps, AppContext } from 'next/app';
-import { getCookie, setCookie } from 'cookies-next';
+import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import posthog from 'posthog-js';
 import Layout from '../components/Layout/Layout';
+import useColorScheme from '../hooks/useColorScheme';
 
 if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
   posthog.init('phc_sHWgUAgxkRXAAv7NSyPnkUWaOzM0hnccRL644rlXpb1', {
@@ -15,13 +14,8 @@ if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
 
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
-  const [colorScheme, setColorScheme] = useState<ColorScheme>(props.colorScheme);
 
-  const toggleColorScheme = (value?: ColorScheme) => {
-    const nextColorScheme = value || (colorScheme === 'dark' ? 'light' : 'dark');
-    setColorScheme(nextColorScheme);
-    setCookie('mantine-color-scheme', nextColorScheme, { maxAge: 60 * 60 * 24 * 30 });
-  };
+  const { colorScheme, toggleColorScheme } = useColorScheme();
 
   return (
     <>
@@ -43,11 +37,3 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
     </>
   );
 }
-
-App.getInitialProps = async (appContext: AppContext) => {
-  const appProps = await NextApp.getInitialProps(appContext);
-  return {
-    ...appProps,
-    colorScheme: getCookie('mantine-color-scheme', appContext.ctx) || 'dark',
-  };
-};
