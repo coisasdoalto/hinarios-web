@@ -3,19 +3,15 @@ import {
   AppShell as MantineAppShell,
   Navbar,
   Header,
-  Footer,
-  Text,
   MediaQuery,
   Burger,
   useMantineTheme,
   Container,
   Button,
-  Breadcrumbs,
 } from '@mantine/core';
 
 import VerticalNavigation from '../VerticalNavigation/VerticalNavigation';
 import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
-import { useRouter } from 'next/router';
 
 export default function AppShell({ children }: PropsWithChildren) {
   const theme = useMantineTheme();
@@ -35,11 +31,11 @@ export default function AppShell({ children }: PropsWithChildren) {
           <VerticalNavigation />
         </Navbar>
       }
-      footer={
-        <Footer height={60} p="md">
-          audio player
-        </Footer>
-      }
+      // footer={
+      //   <Footer height={60} p="md">
+      //     audio player
+      //   </Footer>
+      // }
       header={
         <Header height={{ base: 50, md: 70 }} p="md">
           <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>

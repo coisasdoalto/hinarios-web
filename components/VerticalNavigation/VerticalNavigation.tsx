@@ -1,17 +1,10 @@
 import { Box, NavLink } from '@mantine/core';
-import {
-  IconGauge,
-  IconFingerprint,
-  IconBook,
-  IconBookmarks,
-  IconInfoSquare,
-  IconBooks,
-} from '@tabler/icons';
+import { IconInfoSquare, IconBooks } from '@tabler/icons';
 
 function VerticalNavigation() {
   return (
     <Box>
-      <NavLink label="Favoritos" icon={<IconBookmarks size={16} stroke={1.5} />} />
+      {/* <NavLink label="Favoritos" icon={<IconBookmarks size={16} stroke={1.5} />} /> */}
 
       <NavLink label="Hinários" icon={<IconBooks size={16} stroke={1.5} />} childrenOffset={28}>
         <NavLink label="Hinos e Cânticos" />

@@ -17,12 +17,12 @@ function HymnsList({ hymnsIndex }: { hymnsIndex: HymnsIndex }) {
       active={index === active}
       label={item.title}
       description={item.subtitle}
-      rightSection={
-        <Group>
-          <IconStar size={16} stroke={1.5} />
-          <IconHeadphones size={16} stroke={1.5} onClick={() => console.log('play')} />
-        </Group>
-      }
+      // rightSection={
+      //   <Group>
+      //     <IconStar size={16} stroke={1.5} />
+      //     <IconHeadphones size={16} stroke={1.5} onClick={() => console.log('play')} />
+      //   </Group>
+      // }
       icon={
         <Text sx={{ minWidth: 29, textAlign: 'right', fontFamily: 'mono' }} size="sm">
           {item.number}

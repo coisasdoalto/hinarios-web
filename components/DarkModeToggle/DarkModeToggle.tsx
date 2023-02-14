@@ -1,5 +1,5 @@
 import { ActionIcon, useMantineColorScheme } from '@mantine/core';
-import { IconSun, IconMoonStars, IconBulb, IconBulbOff } from '@tabler/icons';
+import { IconBulb, IconBulbOff } from '@tabler/icons';
 
 function DarkModeToggle() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
