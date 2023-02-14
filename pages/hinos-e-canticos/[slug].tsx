@@ -1,13 +1,13 @@
 import { AppProps } from 'next/app';
-import { ActionIcon, Anchor, Breadcrumbs, Button, Container, Text, Title } from '@mantine/core';
+import { Button, Container, Space, Text, Title } from '@mantine/core';
 import { GetStaticPaths, GetStaticProps } from 'next';
 
 import { Fragment } from 'react';
+import { useRouter } from 'next/router';
+import { IconChevronLeft } from '@tabler/icons';
 import { storage } from '../../firebase';
 import { Hymn, hymnSchema } from '../../schemas/hymn';
 import { hymnsIndexSchema } from '../../schemas/hymnsIndex';
-import { useRouter } from 'next/router';
-import { IconArrowBack, IconArrowLeft, IconChevronLeft } from '@tabler/icons';
 
 const AddBreakLine = ({ children }: { children: string }) => (
   <>
@@ -20,17 +20,6 @@ const AddBreakLine = ({ children }: { children: string }) => (
   </>
 );
 
-enum HymnsSlugs {
-  HC = 'hinos-e-canticos',
-  HE = 'hinos-espirituais',
-}
-
-const hymnBookMapperFromSlug = (slug: HymnsSlugs) =>
-  ({
-    [HymnsSlugs.HC]: 'Hinos e Cânticos',
-    [HymnsSlugs.HE]: 'Hinos Espirituais',
-  }[slug]);
-
 export default function HymnView(props: AppProps & { content: Hymn }) {
   const {
     content: { number, title, subtitle, stanzas, chorus },
@@ -38,58 +27,49 @@ export default function HymnView(props: AppProps & { content: Hymn }) {
 
   const router = useRouter();
 
-  const [hymnBook] = router.asPath.split('/').filter(Boolean);
-
-  const items = [
-    { title: hymnBookMapperFromSlug(hymnBook), href: `/${hymnBook}` },
-    { title: `Hino ${number}`, href: '#' },
-  ].map((item, index) => (
-    <Anchor href={item.href} key={index}>
-      {item.title}
-    </Anchor>
-  ));
-
   return (
-    <>
-      <Breadcrumbs>{items}</Breadcrumbs>
+    <Container size="xs">
+      <Space h="md" />
 
-      <Container size="xs">
-        <Button
-          leftIcon={<IconChevronLeft />}
-          color="gray"
-          variant="outline"
-          onClick={() => router.back()}
-          title="Voltar"
-        >
-          Voltar
-        </Button>
+      <Button
+        leftIcon={<IconChevronLeft />}
+        color="gray"
+        variant="outline"
+        onClick={() => router.back()}
+        title="Voltar"
+      >
+        Voltar
+      </Button>
 
-        <Title order={1}>
-          {number}. {title}
+      <Space h="md" />
+
+      <Title order={1} size="h2">
+        {number}. {title}
+      </Title>
+      {subtitle && (
+        <Title order={5} color="dimmed" italic>
+          {subtitle}
         </Title>
-        {subtitle && (
-          <Title order={5} color="dimmed" italic>
-            {subtitle}
-          </Title>
-        )}
+      )}
 
-        {stanzas.map((stanza, index) => (
-          <Fragment key={stanza.number}>
-            {/* <Text>{stanza.number}.</Text> */}
-            <Text mt={16} pl={20} style={{ position: 'relative' }}>
-              <span style={{ position: 'absolute', left: 0 }}>{stanza.number}.</span>
-              <AddBreakLine>{stanza.text}</AddBreakLine>
+      <Space h="md" />
+
+      {stanzas.map((stanza, index) => (
+        <Fragment key={stanza.number}>
+          {/* <Text>{stanza.number}.</Text> */}
+          <Text mt={16} pl={20} style={{ position: 'relative' }}>
+            <span style={{ position: 'absolute', left: 0 }}>{stanza.number}.</span>
+            <AddBreakLine>{stanza.text}</AddBreakLine>
+          </Text>
+
+          {index === 0 && chorus && (
+            <Text mt={16} pl={40} italic>
+              <AddBreakLine>{chorus}</AddBreakLine>
             </Text>
-
-            {index === 0 && chorus && (
-              <Text mt={16} pl={40} italic>
-                <AddBreakLine>{chorus}</AddBreakLine>
-              </Text>
-            )}
-          </Fragment>
-        ))}
-      </Container>
-    </>
+          )}
+        </Fragment>
+      ))}
+    </Container>
   );
 }
 
