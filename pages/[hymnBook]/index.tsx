@@ -1,22 +1,36 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
+import { z } from 'zod';
 import HymnsList from '../../components/HymnsList/HymnsList';
+import getHymnBookInfo from '../../data/getHymnBookInfo';
+import getHymnBooks from '../../data/getHymnBooks';
 import { storage } from '../../firebase';
+import { HymnBook } from '../../schemas/hymnBook';
 import { HymnsIndex, hymnsIndexSchema } from '../../schemas/hymnsIndex';
 
-export default function Home({ hymnsIndex }: { hymnsIndex: HymnsIndex }) {
-  return <HymnsList hymnsIndex={hymnsIndex} />;
+type PageProps = {
+  hymnsIndex: HymnsIndex;
+  hymnBook: HymnBook;
+};
+
+export default function Home({ hymnsIndex, hymnBook }: PageProps) {
+  return <HymnsList hymnsIndex={hymnsIndex} hymnBook={hymnBook} />;
 }
 
-export const getStaticPaths: GetStaticPaths = async () => ({
-  paths: [
-    { params: { hymnBook: 'hinos-e-canticos' } },
-    // { params: { hymnBook: 'hinos-espirituais' } },
-  ],
-  fallback: false,
-});
+export const getStaticPaths: GetStaticPaths = async () => {
+  const hymnBooks = await getHymnBooks();
 
-export const getStaticProps: GetStaticProps = async (context) => {
-  const hymnBook = context.params?.hymnBook;
+  const paths = hymnBooks.map((hymnBook) => ({
+    params: { hymnBook: hymnBook.slug },
+  }));
+
+  return {
+    paths,
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
+  const hymnBook = z.string().parse(context.params?.hymnBook);
 
   const bucket = storage.bucket();
 
@@ -24,7 +38,15 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const hymnsIndex = hymnsIndexSchema.parse(JSON.parse(index[0].toString()));
 
+  const hymnBookInfo = await getHymnBookInfo(hymnBook);
+
   return {
-    props: { hymnsIndex },
+    props: {
+      hymnsIndex,
+      hymnBook: {
+        ...hymnBookInfo,
+        slug: hymnBook,
+      },
+    },
   };
 };

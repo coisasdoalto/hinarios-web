@@ -4,8 +4,9 @@ import { Box, Button, Group, NavLink, Space, Text, Title } from '@mantine/core';
 import Link from 'next/link';
 import { HymnsIndex } from '../../schemas/hymnsIndex';
 import BackButton from '../BackButton/BackButton';
+import { HymnBook } from '../../schemas/hymnBook';
 
-function HymnsList({ hymnsIndex }: { hymnsIndex: HymnsIndex }) {
+function HymnsList({ hymnsIndex, hymnBook }: { hymnsIndex: HymnsIndex; hymnBook: HymnBook }) {
   const [showAll, setShowAll] = useState(false);
 
   const toggleShowAll = () => setShowAll((currentValue) => !currentValue);
@@ -31,7 +32,7 @@ function HymnsList({ hymnsIndex }: { hymnsIndex: HymnsIndex }) {
       }
       onClick={() => setActive(index)}
       component={Link}
-      href={`hinos-e-canticos/${item.slug}`}
+      href={`${hymnBook.slug}/${item.slug}`}
     />
   ));
 
@@ -41,7 +42,7 @@ function HymnsList({ hymnsIndex }: { hymnsIndex: HymnsIndex }) {
         <BackButton />
 
         <Title order={1} size="h2">
-          Hinos e Cânticos
+          {hymnBook.name}
         </Title>
       </Group>
 

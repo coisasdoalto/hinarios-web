@@ -3,10 +3,12 @@ import { Container, Space, Text, Title } from '@mantine/core';
 import { GetStaticPaths, GetStaticProps } from 'next';
 
 import { Fragment } from 'react';
+import { z } from 'zod';
 import { storage } from '../../firebase';
 import { Hymn, hymnSchema } from '../../schemas/hymn';
 import { hymnsIndexSchema } from '../../schemas/hymnsIndex';
 import BackButton from '../../components/BackButton/BackButton';
+import getHymnBooks from '../../data/getHymnBooks';
 
 const AddBreakLine = ({ children }: { children: string }) => (
   <>
@@ -65,24 +67,37 @@ export default function HymnView(props: AppProps & { content: Hymn }) {
 export const getStaticPaths: GetStaticPaths = async () => {
   const bucket = storage.bucket();
 
-  const index = await bucket.file('hinos-e-canticos/index.json').download();
+  const hymnBooks = await getHymnBooks();
 
-  const hymnsIndex = hymnsIndexSchema.parse(JSON.parse(index[0].toString()));
+  const allPaths = (
+    await Promise.all(
+      hymnBooks.map(async (hymnBook) => {
+        const index = await bucket.file(`${hymnBook.slug}/index.json`).download();
 
-  const paths = hymnsIndex.map(({ slug }) => ({ params: { hymnBook: 'hinos-e-canticos', slug } }));
+        const hymnsIndex = hymnsIndexSchema.parse(JSON.parse(index[0].toString()));
+
+        const paths = hymnsIndex.map(({ slug }) => ({
+          params: { hymnBook: hymnBook.slug, slug },
+        }));
+
+        return paths;
+      })
+    )
+  ).flat();
 
   return {
-    paths,
+    paths: allPaths,
     fallback: false,
   };
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
+  const hymnBook = z.string().parse(context.params?.hymnBook);
   const hymnNumber = String(context.params?.slug)?.split('-')[0];
 
   const bucket = storage.bucket();
 
-  const file = await (await bucket.file(`hinos-e-canticos/${hymnNumber}.json`)).download();
+  const file = await (await bucket.file(`${hymnBook}/${hymnNumber}.json`)).download();
 
   const json = JSON.parse(file[0].toString());
 
