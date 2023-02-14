@@ -10,7 +10,7 @@ export default function Home({ hymnsIndex }: { hymnsIndex: HymnsIndex }) {
 export const getStaticPaths: GetStaticPaths = async () => ({
   paths: [
     { params: { hymnBook: 'hinos-e-canticos' } },
-    { params: { hymnBook: 'hinos-espirituais' } },
+    // { params: { hymnBook: 'hinos-espirituais' } },
   ],
   fallback: false,
 });
