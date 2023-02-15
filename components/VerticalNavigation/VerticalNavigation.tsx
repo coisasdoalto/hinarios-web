@@ -1,25 +1,10 @@
 import { Box, NavLink } from '@mantine/core';
 import { IconInfoSquare, IconBooks, IconHome } from '@tabler/icons';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { z } from 'zod';
-import { HymnBook, hymnBookSchema } from '../../schemas/hymnBook';
+import { useHymnBooksLoad } from '../../hooks/useHymnBooks';
 
 function VerticalNavigation() {
-  const [hymnBooks, setHymnBooks] = useState<HymnBook[] | null>(null);
-
-  useEffect(() => {
-    try {
-      const hymnBooksParsed = z
-        .array(hymnBookSchema)
-        .parse(JSON.parse(localStorage.getItem('hymnBooks') || ''));
-
-      setHymnBooks(hymnBooksParsed);
-    } catch (error) {
-      console.error('Error while loading hymnBooks for side menu navigation.');
-      console.error(error);
-    }
-  }, []);
+  const hymnBooks = useHymnBooksLoad();
 
   return (
     <Box>

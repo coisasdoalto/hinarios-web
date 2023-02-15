@@ -9,6 +9,8 @@ import { Hymn, hymnSchema } from '../../schemas/hymn';
 import { hymnsIndexSchema } from '../../schemas/hymnsIndex';
 import BackButton from '../../components/BackButton/BackButton';
 import getHymnBooks from '../../data/getHymnBooks';
+import { HymnBook } from '../../schemas/hymnBook';
+import { useHymnBooksSave } from '../../hooks/useHymnBooks';
 
 const AddBreakLine = ({ children }: { children: string }) => (
   <>
@@ -23,10 +25,14 @@ const AddBreakLine = ({ children }: { children: string }) => (
 
 const validateFontSize = (fontSize: string): fontSize is MantineSize => /md|lg|xl/.test(fontSize);
 
-export default function HymnView(props: AppProps & { content: Hymn }) {
+type PageProps = { content: Hymn; hymnBooks: HymnBook[] };
+
+export default function HymnView(props: AppProps & PageProps) {
   const {
     content: { number, title, subtitle, stanzas, chorus },
   } = props;
+
+  useHymnBooksSave(props.hymnBooks);
 
   const [fontSize, setFontSize] = useState<MantineSize>('md');
 
@@ -117,7 +123,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
   const hymnBook = z.string().parse(context.params?.hymnBook);
   const hymnNumber = String(context.params?.slug)?.split('-')[0];
 
@@ -129,7 +135,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const content = hymnSchema.parse(json);
 
+  const hymnBooks = await getHymnBooks();
+
   return {
-    props: { content },
+    props: { content, hymnBooks },
   };
 };

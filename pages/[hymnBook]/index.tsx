@@ -4,15 +4,19 @@ import HymnsList from '../../components/HymnsList/HymnsList';
 import getHymnBookInfo from '../../data/getHymnBookInfo';
 import getHymnBooks from '../../data/getHymnBooks';
 import { storage } from '../../firebase';
+import { useHymnBooksSave } from '../../hooks/useHymnBooks';
 import { HymnBook } from '../../schemas/hymnBook';
 import { HymnsIndex, hymnsIndexSchema } from '../../schemas/hymnsIndex';
 
 type PageProps = {
   hymnsIndex: HymnsIndex;
   hymnBook: HymnBook;
+  hymnBooks: HymnBook[];
 };
 
-export default function Home({ hymnsIndex, hymnBook }: PageProps) {
+export default function Home({ hymnsIndex, hymnBook, hymnBooks }: PageProps) {
+  useHymnBooksSave(hymnBooks);
+
   return <HymnsList hymnsIndex={hymnsIndex} hymnBook={hymnBook} />;
 }
 
@@ -40,6 +44,8 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
 
   const hymnBookInfo = await getHymnBookInfo(hymnBook);
 
+  const hymnBooks = await getHymnBooks();
+
   return {
     props: {
       hymnsIndex,
@@ -47,6 +53,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
         ...hymnBookInfo,
         slug: hymnBook,
       },
+      hymnBooks,
     },
   };
 };

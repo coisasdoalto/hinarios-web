@@ -1,16 +1,14 @@
 import { Card, Group, Text } from '@mantine/core';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
-import { useEffect } from 'react';
 import getHymnBooks from '../data/getHymnBooks';
+import { useHymnBooksSave } from '../hooks/useHymnBooks';
 import { HymnBook } from '../schemas/hymnBook';
 
 type PageProps = { hymnBooks: HymnBook[] };
 
 export default function Home({ hymnBooks }: PageProps) {
-  useEffect(() => {
-    localStorage.setItem('hymnBooks', JSON.stringify(hymnBooks));
-  }, []);
+  useHymnBooksSave(hymnBooks);
 
   return (
     <Group>
