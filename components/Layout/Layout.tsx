@@ -28,7 +28,11 @@ export default function AppShell({ children }: PropsWithChildren) {
       asideOffsetBreakpoint="sm"
       navbar={
         <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
-          <VerticalNavigation />
+          <VerticalNavigation
+            onNavigation={() => {
+              setOpened(false);
+            }}
+          />
         </Navbar>
       }
       // footer={

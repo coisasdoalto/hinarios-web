@@ -11,6 +11,8 @@ import BackButton from '../../components/BackButton/BackButton';
 import getHymnBooks from '../../data/getHymnBooks';
 import { HymnBook } from '../../schemas/hymnBook';
 import { useHymnBooksSave } from '../../context/HymnBooks';
+import { readFile } from 'fs/promises';
+import path from 'path';
 
 const AddBreakLine = ({ children }: { children: string }) => (
   <>
@@ -97,16 +99,17 @@ export default function HymnView(props: AppProps & PageProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const bucket = storage.bucket();
+  // const bucket = storage.bucket();
 
   const hymnBooks = await getHymnBooks();
 
   const allPaths = (
     await Promise.all(
       hymnBooks.map(async (hymnBook) => {
-        const index = await bucket.file(`${hymnBook.slug}/index.json`).download();
+        // const index = await bucket.file(`${hymnBook.slug}/index.json`).download();
+        const file = await readFile(path.join('tmp', 'hymnsData', `${hymnBook.slug}/index.json`));
 
-        const hymnsIndex = hymnsIndexSchema.parse(JSON.parse(index[0].toString()));
+        const hymnsIndex = hymnsIndexSchema.parse(JSON.parse(file.toString()));
 
         const paths = hymnsIndex.map(({ slug }) => ({
           params: { hymnBook: hymnBook.slug, slug },

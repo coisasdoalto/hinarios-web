@@ -3,7 +3,7 @@ import { IconInfoSquare, IconBooks, IconHome } from '@tabler/icons';
 import Link from 'next/link';
 import { useHymnBooks } from '../../context/HymnBooks';
 
-function VerticalNavigation() {
+function VerticalNavigation({ onNavigation }: { onNavigation: () => void }) {
   const [hymnBooks] = useHymnBooks();
 
   return (
@@ -14,6 +14,7 @@ function VerticalNavigation() {
         icon={<IconHome size={16} stroke={1.5} />}
         component={Link}
         href="/"
+        onClick={onNavigation}
       />
 
       <NavLink
@@ -28,6 +29,7 @@ function VerticalNavigation() {
             label={hymnBook.name}
             component={Link}
             href={`/${hymnBook.slug}`}
+            onClick={onNavigation}
           />
         ))}
       </NavLink>
@@ -37,6 +39,7 @@ function VerticalNavigation() {
         icon={<IconInfoSquare size={16} stroke={1.5} />}
         component={Link}
         href="/sobre"
+        onClick={onNavigation}
       />
     </Box>
   );
