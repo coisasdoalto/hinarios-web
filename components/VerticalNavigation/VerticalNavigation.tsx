@@ -1,8 +1,26 @@
 import { Box, NavLink } from '@mantine/core';
 import { IconInfoSquare, IconBooks, IconHome } from '@tabler/icons';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { z } from 'zod';
+import { HymnBook, hymnBookSchema } from '../../schemas/hymnBook';
 
 function VerticalNavigation() {
+  const [hymnBooks, setHymnBooks] = useState<HymnBook[] | null>(null);
+
+  useEffect(() => {
+    try {
+      const hymnBooksParsed = z
+        .array(hymnBookSchema)
+        .parse(JSON.parse(localStorage.getItem('hymnBooks') || ''));
+
+      setHymnBooks(hymnBooksParsed);
+    } catch (error) {
+      console.error('Error while loading hymnBooks for side menu navigation.');
+      console.error(error);
+    }
+  }, []);
+
   return (
     <Box>
       {/* <NavLink label="Favoritos" icon={<IconBookmarks size={16} stroke={1.5} />} /> */}
@@ -19,8 +37,14 @@ function VerticalNavigation() {
         childrenOffset={28}
         defaultOpened
       >
-        <NavLink label="Hinos e Cânticos" component={Link} href="/hinos-e-canticos" />
-        {/* <NavLink label="Hinos Espirituais" /> */}
+        {hymnBooks?.map((hymnBook) => (
+          <NavLink
+            key={hymnBook.slug}
+            label={hymnBook.name}
+            component={Link}
+            href={`/${hymnBook.slug}`}
+          />
+        ))}
       </NavLink>
 
       <NavLink

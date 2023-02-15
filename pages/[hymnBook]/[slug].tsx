@@ -28,8 +28,6 @@ export default function HymnView(props: AppProps & { content: Hymn }) {
 
   return (
     <Container size="xs">
-      <Space h="md" />
-
       <BackButton />
 
       <Space h="md" />

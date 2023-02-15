@@ -50,7 +50,7 @@ export default function AppShell({ children }: PropsWithChildren) {
             </MediaQuery>
 
             <Button sx={{ marginRight: 'auto' }} variant="subtle" component="a" href="/">
-              Hinários Web
+              Hinários
             </Button>
 
             <DarkModeToggle />
@@ -58,7 +58,9 @@ export default function AppShell({ children }: PropsWithChildren) {
         </Header>
       }
     >
-      <Container px={0}>{children}</Container>
+      <Container px={0} py={16}>
+        {children}
+      </Container>
     </MantineAppShell>
   );
 }
