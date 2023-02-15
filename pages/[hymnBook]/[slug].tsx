@@ -1,8 +1,8 @@
 import { AppProps } from 'next/app';
-import { Container, Space, Text, Title } from '@mantine/core';
+import { Box, Container, MantineSize, SegmentedControl, Space, Text, Title } from '@mantine/core';
 import { GetStaticPaths, GetStaticProps } from 'next';
 
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { z } from 'zod';
 import { storage } from '../../firebase';
 import { Hymn, hymnSchema } from '../../schemas/hymn';
@@ -21,10 +21,26 @@ const AddBreakLine = ({ children }: { children: string }) => (
   </>
 );
 
+const validateFontSize = (fontSize: string): fontSize is MantineSize => /md|lg|xl/.test(fontSize);
+
 export default function HymnView(props: AppProps & { content: Hymn }) {
   const {
     content: { number, title, subtitle, stanzas, chorus },
   } = props;
+
+  const [fontSize, setFontSize] = useState<MantineSize>('md');
+
+  useEffect(() => {
+    const localStorageFontSize = localStorage.getItem('fontSize') || '';
+
+    if (validateFontSize(localStorageFontSize)) {
+      setFontSize(localStorageFontSize);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('fontSize', fontSize);
+  }, [fontSize]);
 
   return (
     <Container size="xs">
@@ -43,16 +59,28 @@ export default function HymnView(props: AppProps & { content: Hymn }) {
 
       <Space h="md" />
 
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <SegmentedControl
+          value={fontSize}
+          onChange={(value: MantineSize) => setFontSize(value)}
+          data={[
+            { label: 'Pequeno', value: 'md' },
+            { label: 'Médio', value: 'lg' },
+            { label: 'Grande', value: 'xl' },
+          ]}
+        />
+      </Box>
+
       {stanzas.map((stanza, index) => (
         <Fragment key={stanza.number}>
           {/* <Text>{stanza.number}.</Text> */}
-          <Text mt={16} pl={20} style={{ position: 'relative' }}>
+          <Text size={fontSize} mt={16} pl={20} style={{ position: 'relative' }}>
             <span style={{ position: 'absolute', left: 0 }}>{stanza.number}.</span>
             <AddBreakLine>{stanza.text}</AddBreakLine>
           </Text>
 
           {index === 0 && chorus && (
-            <Text mt={16} pl={40} italic>
+            <Text size={fontSize} mt={16} pl={40} italic>
               <AddBreakLine>{chorus}</AddBreakLine>
             </Text>
           )}
