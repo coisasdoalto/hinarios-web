@@ -1,10 +1,10 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { z } from 'zod';
 import HymnsList from '../../components/HymnsList/HymnsList';
+import { useHymnBooksSave } from '../../context/HymnBooks';
 import getHymnBookInfo from '../../data/getHymnBookInfo';
 import getHymnBooks from '../../data/getHymnBooks';
 import { storage } from '../../firebase';
-import { useHymnBooksSave } from '../../hooks/useHymnBooks';
 import { HymnBook } from '../../schemas/hymnBook';
 import { HymnsIndex, hymnsIndexSchema } from '../../schemas/hymnsIndex';
 

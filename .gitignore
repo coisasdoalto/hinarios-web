@@ -36,3 +36,6 @@ yarn-error.log*
 
 # storybook
 storybook-static.env*
+
+public/hymnBooks.json
+cert.json

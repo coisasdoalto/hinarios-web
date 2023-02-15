@@ -10,7 +10,7 @@ import { hymnsIndexSchema } from '../../schemas/hymnsIndex';
 import BackButton from '../../components/BackButton/BackButton';
 import getHymnBooks from '../../data/getHymnBooks';
 import { HymnBook } from '../../schemas/hymnBook';
-import { useHymnBooksSave } from '../../hooks/useHymnBooks';
+import { useHymnBooksSave } from '../../context/HymnBooks';
 
 const AddBreakLine = ({ children }: { children: string }) => (
   <>

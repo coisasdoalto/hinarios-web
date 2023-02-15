@@ -1,10 +1,10 @@
 import { Box, NavLink } from '@mantine/core';
 import { IconInfoSquare, IconBooks, IconHome } from '@tabler/icons';
 import Link from 'next/link';
-import { useHymnBooksLoad } from '../../hooks/useHymnBooks';
+import { useHymnBooks } from '../../context/HymnBooks';
 
 function VerticalNavigation() {
-  const hymnBooks = useHymnBooksLoad();
+  const [hymnBooks] = useHymnBooks();
 
   return (
     <Box>

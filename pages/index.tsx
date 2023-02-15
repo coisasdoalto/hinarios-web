@@ -1,8 +1,8 @@
 import { Card, Group, Text } from '@mantine/core';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
+import { useHymnBooksSave } from '../context/HymnBooks';
 import getHymnBooks from '../data/getHymnBooks';
-import { useHymnBooksSave } from '../hooks/useHymnBooks';
 import { HymnBook } from '../schemas/hymnBook';
 
 type PageProps = { hymnBooks: HymnBook[] };

@@ -5,6 +5,7 @@ import { NotificationsProvider } from '@mantine/notifications';
 import posthog from 'posthog-js';
 import Layout from '../components/Layout/Layout';
 import useColorScheme from '../hooks/useColorScheme';
+import { HymnBooksProvider, useCreateHymnBooksCache } from '../context/HymnBooks';
 
 if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
   posthog.init('phc_sHWgUAgxkRXAAv7NSyPnkUWaOzM0hnccRL644rlXpb1', {
@@ -17,6 +18,8 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
 
   const { colorScheme, toggleColorScheme } = useColorScheme();
 
+  const hymnBooksCache = useCreateHymnBooksCache();
+
   return (
     <>
       <Head>
@@ -28,9 +31,11 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
       <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
         <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
           <NotificationsProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            <HymnBooksProvider hymnBooksCache={hymnBooksCache}>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </HymnBooksProvider>
           </NotificationsProvider>
         </MantineProvider>
       </ColorSchemeProvider>
