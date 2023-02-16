@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "yarn scripts:run scripts/downloadData.ts && next build",
+    "build": "rm -rf ./tmp/hymnsData && yarn scripts:run scripts/downloadData.ts && next build",
     "analyze": "ANALYZE=true next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",

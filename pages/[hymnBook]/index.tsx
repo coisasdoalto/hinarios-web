@@ -4,9 +4,9 @@ import HymnsList from '../../components/HymnsList/HymnsList';
 import { useHymnBooksSave } from '../../context/HymnBooks';
 import getHymnBookInfo from '../../data/getHymnBookInfo';
 import getHymnBooks from '../../data/getHymnBooks';
-import { storage } from '../../firebase';
+import getHymnsIndex from '../../data/getHymnsIndex';
 import { HymnBook } from '../../schemas/hymnBook';
-import { HymnsIndex, hymnsIndexSchema } from '../../schemas/hymnsIndex';
+import { HymnsIndex } from '../../schemas/hymnsIndex';
 
 type PageProps = {
   hymnsIndex: HymnsIndex;
@@ -34,24 +34,19 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
-  const hymnBook = z.string().parse(context.params?.hymnBook);
+  const hymnBookSlug = z.string().parse(context.params?.hymnBook);
 
-  const bucket = storage.bucket();
+  const hymnsIndex = await getHymnsIndex(hymnBookSlug);
 
-  const index = await bucket.file(`${hymnBook}/index.json`).download();
-
-  const hymnsIndex = hymnsIndexSchema.parse(JSON.parse(index[0].toString()));
-
-  const hymnBookInfo = await getHymnBookInfo(hymnBook);
+  const hymnBookInfo = await getHymnBookInfo(hymnBookSlug);
 
   const hymnBooks = await getHymnBooks();
-
   return {
     props: {
       hymnsIndex,
       hymnBook: {
         ...hymnBookInfo,
-        slug: hymnBook,
+        slug: hymnBookSlug,
       },
       hymnBooks,
     },

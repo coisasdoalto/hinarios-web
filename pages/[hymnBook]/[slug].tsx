@@ -4,15 +4,13 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 
 import { Fragment, useEffect, useState } from 'react';
 import { z } from 'zod';
-import { storage } from '../../firebase';
 import { Hymn, hymnSchema } from '../../schemas/hymn';
-import { hymnsIndexSchema } from '../../schemas/hymnsIndex';
 import BackButton from '../../components/BackButton/BackButton';
 import getHymnBooks from '../../data/getHymnBooks';
 import { HymnBook } from '../../schemas/hymnBook';
 import { useHymnBooksSave } from '../../context/HymnBooks';
-import { readFile } from 'fs/promises';
-import path from 'path';
+import getParsedData from '../../data/getParsedData';
+import getHymnsIndex from '../../data/getHymnsIndex';
 
 const AddBreakLine = ({ children }: { children: string }) => (
   <>
@@ -99,17 +97,12 @@ export default function HymnView(props: AppProps & PageProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  // const bucket = storage.bucket();
-
   const hymnBooks = await getHymnBooks();
 
   const allPaths = (
     await Promise.all(
       hymnBooks.map(async (hymnBook) => {
-        // const index = await bucket.file(`${hymnBook.slug}/index.json`).download();
-        const file = await readFile(path.join('tmp', 'hymnsData', `${hymnBook.slug}/index.json`));
-
-        const hymnsIndex = hymnsIndexSchema.parse(JSON.parse(file.toString()));
+        const hymnsIndex = await getHymnsIndex(hymnBook.slug);
 
         const paths = hymnsIndex.map(({ slug }) => ({
           params: { hymnBook: hymnBook.slug, slug },
@@ -130,13 +123,10 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
   const hymnBook = z.string().parse(context.params?.hymnBook);
   const hymnNumber = String(context.params?.slug)?.split('-')[0];
 
-  const bucket = storage.bucket();
-
-  const file = await (await bucket.file(`${hymnBook}/${hymnNumber}.json`)).download();
-
-  const json = JSON.parse(file[0].toString());
-
-  const content = hymnSchema.parse(json);
+  const content = await getParsedData({
+    filePath: `${hymnBook}/${hymnNumber}.json`,
+    schema: hymnSchema,
+  });
 
   const hymnBooks = await getHymnBooks();
 

@@ -1,27 +1,9 @@
-import { readdir, readFile } from 'fs/promises';
-import path from 'path';
-import { storage } from '../firebase';
+import { readdir } from 'fs/promises';
 import getHymnBookInfo from './getHymnBookInfo';
+import { joinDataPath } from './getParsedData';
 
 const getHymnBooks = async () => {
-  // const bucket = storage.bucket();
-
-  // const [files] = await bucket.getFiles();
-
-  // const hymnBooks = await Promise.all(
-  //   files
-  //     .map((file) => file.name)
-  //     .filter((fileName) => fileName.match(/\/$/))
-  //     .map(async (fileName) => {
-  //       const slug = fileName.replace('/', '');
-  //       return {
-  //         slug,
-  //         name: (await getHymnBookInfo(slug)).name,
-  //       };
-  //     })
-  // );
-
-  const hymnBooksSlugs = await readdir(path.join('tmp', 'hymnsData'));
+  const hymnBooksSlugs = await readdir(joinDataPath(''));
 
   const hymnBooks = await Promise.all(
     hymnBooksSlugs.map(async (slug) => ({

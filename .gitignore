@@ -39,3 +39,4 @@ storybook-static.env*
 
 public/hymnBooks.json
 cert.json
+/tmp
