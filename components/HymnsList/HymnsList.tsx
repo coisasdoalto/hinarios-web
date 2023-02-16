@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { IconHeadphones, IconStar } from '@tabler/icons';
 import { Box, Button, Group, NavLink, Space, Text, Title } from '@mantine/core';
 import Link from 'next/link';
+import LazyLoad from 'react-lazyload';
 import { HymnsIndex } from '../../schemas/hymnsIndex';
 import BackButton from '../BackButton/BackButton';
 import { HymnBook } from '../../schemas/hymnBook';
@@ -16,26 +17,30 @@ function HymnsList({ hymnsIndex, hymnBook }: { hymnsIndex: HymnsIndex; hymnBook:
   const items = hymnsIndex
     // .slice(0, showAll ? undefined : 20)
     .map((item, index) => (
-      <NavLink
-        key={item.number}
-        active={index === active}
-        label={item.title}
-        description={item.subtitle}
-        // rightSection={
-        //   <Group>
-        //     <IconStar size={16} stroke={1.5} />
-        //     <IconHeadphones size={16} stroke={1.5} onClick={() => console.log('play')} />
-        //   </Group>
-        // }
-        icon={
-          <Text sx={{ minWidth: 29, textAlign: 'right', fontFamily: 'mono' }} size="sm">
-            {item.number}
-          </Text>
-        }
-        onClick={() => setActive(index)}
-        component={Link}
-        href={`${hymnBook.slug}/${item.slug}`}
-      />
+      <Fragment key={item.number}>
+        <LazyLoad height={59.39} once>
+          <NavLink
+            key={item.number}
+            active={index === active}
+            label={item.title}
+            description={item.subtitle}
+            // rightSection={
+            //   <Group>
+            //     <IconStar size={16} stroke={1.5} />
+            //     <IconHeadphones size={16} stroke={1.5} onClick={() => console.log('play')} />
+            //   </Group>
+            // }
+            icon={
+              <Text sx={{ minWidth: 29, textAlign: 'right', fontFamily: 'mono' }} size="sm">
+                {item.number}
+              </Text>
+            }
+            onClick={() => setActive(index)}
+            component={Link}
+            href={`${hymnBook.slug}/${item.slug}`}
+          />
+        </LazyLoad>
+      </Fragment>
     ));
 
   return (
