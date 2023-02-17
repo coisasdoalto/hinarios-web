@@ -1,34 +1,47 @@
+import { readdir, writeFile } from 'fs/promises';
+import path from 'path';
 import slugify from 'slugify';
-import { storage } from '../firebase';
+import getHymnBooks from '../data/getHymnBooks';
+import getParsedData, { joinDataPath } from '../data/getParsedData';
 import { hymnSchema } from '../schemas/hymn';
 
 async function generateHymnsIndex() {
-  const bucket = storage.bucket();
+  const hymnBooks = await getHymnBooks();
 
-  const [files] = await bucket.getFiles({ prefix: 'hinos-espirituais/' });
+  await Promise.all(
+    hymnBooks.map(async (hymnBook) => {
+      const hymnFilenames = await Promise.all(
+        (
+          await readdir(joinDataPath(hymnBook.slug))
+        ).filter((hymnFilename) => /\d.*\.json/.test(hymnFilename))
+      );
 
-  const hymns = (
-    await Promise.all(
-      files
-        .filter((file) => file.name.replace(/\D/g, ''))
-        .map(async (file) => {
-          const downloaded = await file.download();
+      const hymns = await (
+        await Promise.all(
+          hymnFilenames.map(async (hymnFilename) =>
+            getParsedData({
+              filePath: path.join(hymnBook.slug, hymnFilename),
+              schema: hymnSchema,
+            })
+          )
+        )
+      ).sort(
+        (current, next) => parseInt(String(current.number), 10) - parseInt(String(next.number), 10)
+      );
 
-          const json = JSON.parse(downloaded[0].toString());
+      const index = hymns.map((hymn) => ({
+        number: hymn.number,
+        title: hymn.title,
+        subtitle: hymn.subtitle,
+        slug: `${hymn.number}-${slugify(hymn.title)}`,
+      }));
 
-          return hymnSchema.parse(json);
-        })
-    )
-  ).sort((current, next) => Number(current.number) - Number(next.number));
-
-  const index = hymns.map((hymn) => ({
-    number: hymn.number,
-    title: hymn.title,
-    subtitle: hymn.subtitle,
-    slug: `${hymn.number}-${slugify(hymn.title)}`,
-  }));
-
-  console.log(JSON.stringify(index, null, 2));
+      await writeFile(
+        joinDataPath(path.join(hymnBook.slug, 'index.json')),
+        JSON.stringify(index, null, 2)
+      );
+    })
+  );
 }
 
 generateHymnsIndex();
