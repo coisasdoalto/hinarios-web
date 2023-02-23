@@ -1,10 +1,10 @@
 import { readdir, writeFile } from 'fs/promises';
 import path from 'path';
-import slugify from 'slugify';
 import elasticlunr from 'elasticlunr';
+import slugify from 'slugify';
 import getHymnBooks from '../data/getHymnBooks';
 import getParsedData, { joinDataPath } from '../data/getParsedData';
-import { hymnSchema } from '../schemas/hymn';
+import { Hymn, hymnSchema } from '../schemas/hymn';
 
 // eslint-disable-next-line func-names
 const index = elasticlunr<{ id: string; title: string; body: string }>(function () {
@@ -13,6 +13,25 @@ const index = elasticlunr<{ id: string; title: string; body: string }>(function 
   this.addField('body');
   this.saveDocument(true);
 });
+
+const composeStanzaText = (stanza?: { number: string | number; text: string }) => {
+  if (!stanza) {
+    return null;
+  }
+
+  return `${stanza.number}. ${stanza.text}`;
+};
+
+const composeLyrics = (hymn: Hymn): string => {
+  const {
+    stanzas: [firstStanza, ...stanzasRest],
+    chorus,
+  } = hymn;
+
+  return [composeStanzaText(firstStanza), chorus, stanzasRest.map(composeStanzaText)]
+    .filter(Boolean)
+    .join('\n\n');
+};
 
 async function generateHymnsIndex() {
   const hymnBooks = await getHymnBooks();
@@ -25,7 +44,7 @@ async function generateHymnsIndex() {
         ).filter((hymnFilename) => /\d.*\.json/.test(hymnFilename))
       );
 
-      const hymns = await (
+      await (
         await Promise.all(
           hymnFilenames.map(async (hymnFilename) =>
             getParsedData({
@@ -41,16 +60,17 @@ async function generateHymnsIndex() {
         )
         .map((hymn) => ({
           id: `${hymnBook.slug}/${hymn.number}`,
-          hymnBook: hymnBook.slug,
+          hymnBook,
           number: hymn.number,
           title: `${hymn.number}. ${hymn.title}`,
-          body: `${hymn.stanzas.map(({ text }) => text).join('\n')}`,
+          body: composeLyrics(hymn),
+          slug: `${hymn.number}-${slugify(hymn.title)}`,
         }))
         .forEach((hymn) => index.addDoc(hymn));
     })
   );
 
-  await writeFile(path.join(__dirname, 'searchIndex.json'), JSON.stringify(index));
+  await writeFile(path.join(__dirname, '..', 'search', 'searchIndex.json'), JSON.stringify(index));
 }
 
 generateHymnsIndex();

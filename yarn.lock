@@ -1925,6 +1925,13 @@
     "@mantine/utils" "5.10.2"
     prism-react-renderer "^1.2.1"
 
+"@mantine/spotlight@^5.10.4":
+  version "5.10.4"
+  resolved "https://registry.yarnpkg.com/@mantine/spotlight/-/spotlight-5.10.4.tgz#0ec05e5e9868f263e79fc8f30817f4b8f992f492"
+  integrity sha512-gtEVWIPrFHDyGNRx5iKOQMFZiY3BHPAx/vZT3JhWfb+hzA9reMi9UY8s9vpqGOZcLHrvf8YM4IQt6phQkKighA==
+  dependencies:
+    "@mantine/utils" "5.10.4"
+
 "@mantine/ssr@5.10.2":
   version "5.10.2"
   resolved "https://registry.yarnpkg.com/@mantine/ssr/-/ssr-5.10.2.tgz#7893a11e1f79d996dc436a66114149427201d44f"
@@ -1945,6 +1952,11 @@
   version "5.10.2"
   resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.10.2.tgz#207a4e8434b521305bb63563244765db1022b005"
   integrity sha512-mpXTPG9X2nPfHGg3ejcWkSlYVxuiTx6RxWbbFHEk/U2fSikEAQdMNdVPaKI2c0/S2jksqJXlODZJv2Qt9HAFMQ==
+
+"@mantine/utils@5.10.4":
+  version "5.10.4"
+  resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.10.4.tgz#2160888000eacd05bed6072cb7282646fdb2abbb"
+  integrity sha512-Xrx7Pk+GOwk/0P0qa/JEknZ5AzUBRnD+Ghz1Wu3z4w32NwsNSgq/8YvFVhvxAP7FMbi7Z5xicHzHmhXy1BvZrw==
 
 "@mdx-js/mdx@^1.6.22":
   version "1.6.22"

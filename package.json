@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "rm -rf ./tmp/hymnsData && yarn scripts:run scripts/downloadData.ts && next build",
+    "build": "rm -rf ./tmp/hymnsData && yarn data:download && yarn generate:searchIndex && next build",
     "build:only": "next build",
     "analyze": "ANALYZE=true next build",
     "start": "next start",
@@ -18,8 +18,10 @@
     "test": "npm run prettier:check && npm run lint && npm run typecheck && npm run jest",
     "storybook": "start-storybook -p 7001",
     "storybook:build": "build-storybook",
-    "data:generate-index": "ts-node -O '{\"module\": \"commonjs\"}' scripts/generateHymnsIndex.ts",
-    "scripts:run": "ts-node -O '{\"module\": \"commonjs\"}'"
+    "scripts:run": "ts-node -O '{\"module\": \"commonjs\"}'",
+    "data:download": "yarn scripts:run scripts/downloadData.ts",
+    "generate:index": "yarn scripts:run scripts/generateHymnsIndex.ts",
+    "generate:searchIndex": "yarn scripts:run scripts/generateSearchIndex.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
@@ -31,6 +33,7 @@
     "@mantine/next": "5.10.2",
     "@mantine/notifications": "5.10.2",
     "@mantine/prism": "5.10.2",
+    "@mantine/spotlight": "^5.10.4",
     "@next/bundle-analyzer": "^13.1.6",
     "@tabler/icons": "^1.107.0",
     "cookies-next": "^2.1.1",

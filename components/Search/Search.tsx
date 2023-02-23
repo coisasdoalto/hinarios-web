@@ -1,93 +1,93 @@
-import { forwardRef, useState } from 'react';
-import {
-  Group,
-  Avatar,
-  Text,
-  MantineColor,
-  SelectItemProps,
-  Autocomplete,
-  AutocompleteItem,
-} from '@mantine/core';
+import { DefaultProps, Group, Text, UnstyledButton } from '@mantine/core';
+import { SpotlightProvider, openSpotlight } from '@mantine/spotlight';
+import type { SpotlightAction } from '@mantine/spotlight';
+import { IconSearch } from '@tabler/icons';
 import elasticlunr from 'elasticlunr';
-import searchIndexJson from '../../scripts/searchIndex.json';
+import { NextRouter, useRouter } from 'next/router';
+import { useOs } from '@mantine/hooks';
+import { useEffect, useState } from 'react';
+import searchIndexJson from '../../search/searchIndex.json';
+import { HymnBook } from '../../schemas/hymnBook';
+import useStyles from './SearchControl.styles';
 
-const charactersList = [
-  {
-    image: 'https://img.icons8.com/clouds/256/000000/futurama-bender.png',
-    label: 'Bender Bending Rodríguez',
-    description: 'Fascinated with cooking, though has no sense of taste',
-  },
-
-  {
-    image: 'https://img.icons8.com/clouds/256/000000/futurama-mom.png',
-    label: 'Carol Miller',
-    description: 'One of the richest people on Earth',
-  },
-  {
-    image: 'https://img.icons8.com/clouds/256/000000/homer-simpson.png',
-    label: 'Homer Simpson',
-    description: 'Overweight, lazy, and often ignorant',
-  },
-  {
-    image: 'https://img.icons8.com/clouds/256/000000/spongebob-squarepants.png',
-    label: 'Spongebob Squarepants',
-    description: 'Not just a sponge',
-  },
-];
-
-// const data = charactersList.map((item) => ({ ...item, value: item.label }));
-
-interface ItemProps extends SelectItemProps {
-  color: MantineColor;
+const searchIndex = elasticlunr.Index.load<{
+  title: string;
   body: string;
-  image: string;
+  slug: string;
+  hymnBook: HymnBook;
+}>(searchIndexJson as any);
+
+interface SearchControlProps extends DefaultProps, React.ComponentPropsWithoutRef<'button'> {
+  onClick(): void;
 }
 
-const AutoCompleteItem = forwardRef<HTMLDivElement, ItemProps>(
-  ({ body, value, ...others }: ItemProps, ref) => (
-    <div ref={ref} {...others}>
-      <Group noWrap>
-        <div>
-          <Text>{value}</Text>
-          <Text size="xs" color="dimmed">
-            {body}
-          </Text>
-        </div>
+export function SearchControl({ className, ...others }: SearchControlProps) {
+  const { classes, cx } = useStyles();
+
+  const [mac, setMac] = useState(false);
+
+  const os = useOs();
+
+  useEffect(() => {
+    if (os === 'macos') {
+      return setMac(true);
+    }
+
+    return setMac(false);
+  }, [os]);
+
+  return (
+    <UnstyledButton {...others} className={cx(classes.root, className)}>
+      <Group spacing="xs">
+        <IconSearch size={14} stroke={1.5} />
+        <Text size="sm" color="dimmed" pr={80}>
+          Buscar
+        </Text>
+        <Text weight={700} className={classes.shortcut}>
+          {mac ? '⌘' : 'Ctrl'} + K
+        </Text>
       </Group>
-    </div>
-  )
-);
+    </UnstyledButton>
+  );
+}
 
-const searchIndex = elasticlunr.Index.load<{ title: string }>(searchIndexJson as any);
+const actions: SpotlightAction[] = [];
 
-function Search() {
-  const [value, setValue] = useState('');
+const search = (router: NextRouter) => (query: string) => {
+  const results = searchIndex.search(query, {
+    fields: { title: { boost: 1 }, body: { boost: 1 } },
+  });
 
-  const results = searchIndex.search(value, {}).slice(0, 5);
-
-  const filteredData: AutocompleteItem[] = results.map((result) => {
+  const filteredData: SpotlightAction[] = results.map((result) => {
     const doc = searchIndex.documentStore.getDoc(result.ref);
+
+    const href = `/${doc.hymnBook.slug}/${doc.slug}`;
+
     return {
-      ...doc,
-      value: doc.title,
+      title: doc.title,
+      description: `${doc.body.slice(0, 90)}...`,
+      onTrigger: () => router.push(href),
+      group: doc.hymnBook.name,
     };
   });
 
-  console.log(results, filteredData);
+  return filteredData;
+};
+
+function Search() {
+  const router = useRouter();
 
   return (
-    <Autocomplete
-      //       label="Choose employee of the month"
-      value={value}
-      onChange={setValue}
-      placeholder="Buscar hino"
-      itemComponent={AutoCompleteItem}
-      data={filteredData}
-      //       filter={(value, item) =>
-      //         item.value.toLowerCase().includes(value.toLowerCase().trim()) ||
-      //         item.description.toLowerCase().includes(value.toLowerCase().trim())
-      //       }
-    />
+    <SpotlightProvider
+      actions={actions}
+      searchIcon={<IconSearch size={18} />}
+      searchPlaceholder="Buscar..."
+      shortcut={['mod + P', 'mod + K', '/']}
+      nothingFoundMessage="Nada encontrado..."
+      filter={search(router)}
+    >
+      <SearchControl onClick={() => openSpotlight()} />
+    </SpotlightProvider>
   );
 }
 
