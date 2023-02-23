@@ -12,6 +12,7 @@ import {
 
 import VerticalNavigation from '../VerticalNavigation/VerticalNavigation';
 import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
+import Search from '../Search/Search';
 
 export default function AppShell({ children }: PropsWithChildren) {
   const theme = useMantineTheme();
@@ -42,7 +43,14 @@ export default function AppShell({ children }: PropsWithChildren) {
       // }
       header={
         <Header height={{ base: 50, md: 70 }} p="md">
-          <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              height: '100%',
+            }}
+          >
             <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
               <Burger
                 opened={opened}
@@ -53,9 +61,11 @@ export default function AppShell({ children }: PropsWithChildren) {
               />
             </MediaQuery>
 
-            <Button sx={{ marginRight: 'auto' }} variant="subtle" component="a" href="/">
+            <Button variant="subtle" component="a" href="/">
               Hinários
             </Button>
+
+            <Search />
 
             <DarkModeToggle />
           </div>
