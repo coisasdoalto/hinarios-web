@@ -3,16 +3,9 @@ import Head from 'next/head';
 import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import posthog from 'posthog-js';
-import elasticlunr from 'elasticlunr';
 import Layout from '../components/Layout/Layout';
 import useColorScheme from '../hooks/useColorScheme';
 import { HymnBooksProvider, useCreateHymnBooksCache } from '../context/HymnBooks';
-import searchIndexJson from '../scripts/searchIndex.json';
-
-// const searchIndex = elasticlunr.Index.load(searchIndexJson as any);
-
-// console.log(searchIndex.search('protegidos'));
-// console.log(searchIndexJson);
 
 if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
   posthog.init('phc_sHWgUAgxkRXAAv7NSyPnkUWaOzM0hnccRL644rlXpb1', {

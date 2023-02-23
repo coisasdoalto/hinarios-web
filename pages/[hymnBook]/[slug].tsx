@@ -14,8 +14,8 @@ import getHymnsIndex from '../../data/getHymnsIndex';
 
 const AddBreakLine = ({ children }: { children: string }) => (
   <>
-    {children.split('\n').map((line) => (
-      <Fragment key={line}>
+    {children.split('\n').map((line, index) => (
+      <Fragment key={index}>
         {line}
         <br />
       </Fragment>
@@ -48,6 +48,12 @@ export default function HymnView(props: AppProps & PageProps) {
     localStorage.setItem('fontSize', fontSize);
   }, [fontSize]);
 
+  const chorusComponent = chorus && (
+    <Text size={fontSize} mt={16} pl={40} italic>
+      <AddBreakLine>{chorus}</AddBreakLine>
+    </Text>
+  );
+
   return (
     <Container size="xs">
       <BackButton />
@@ -77,6 +83,8 @@ export default function HymnView(props: AppProps & PageProps) {
         />
       </Box>
 
+      {!stanzas.length && <Box mt={16}>{chorusComponent}</Box>}
+
       {stanzas.map((stanza, index) => (
         <Fragment key={stanza.number}>
           {/* <Text>{stanza.number}.</Text> */}
@@ -85,11 +93,7 @@ export default function HymnView(props: AppProps & PageProps) {
             <AddBreakLine>{stanza.text}</AddBreakLine>
           </Text>
 
-          {index === 0 && chorus && (
-            <Text size={fontSize} mt={16} pl={40} italic>
-              <AddBreakLine>{chorus}</AddBreakLine>
-            </Text>
-          )}
+          {index === 0 && chorus && chorusComponent}
         </Fragment>
       ))}
     </Container>
