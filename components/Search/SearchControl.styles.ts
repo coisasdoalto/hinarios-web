@@ -2,7 +2,7 @@ import { createStyles } from '@mantine/core';
 
 export default createStyles((theme) => ({
   root: {
-    height: 34,
+    height: 30,
     paddingLeft: theme.spacing.sm,
     paddingRight: 5,
     borderRadius: theme.radius.md,

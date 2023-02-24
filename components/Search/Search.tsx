@@ -1,4 +1,4 @@
-import { DefaultProps, Group, Text, UnstyledButton } from '@mantine/core';
+import { ActionIcon, DefaultProps, Group, MediaQuery, Text, UnstyledButton } from '@mantine/core';
 import { SpotlightProvider, openSpotlight } from '@mantine/spotlight';
 import type { SpotlightAction } from '@mantine/spotlight';
 import { IconSearch } from '@tabler/icons';
@@ -37,17 +37,26 @@ export function SearchControl({ className, ...others }: SearchControlProps) {
   }, [os]);
 
   return (
-    <UnstyledButton {...others} className={cx(classes.root, className)}>
-      <Group spacing="xs">
-        <IconSearch size={14} stroke={1.5} />
-        <Text size="sm" color="dimmed" pr={80}>
-          Buscar
-        </Text>
-        <Text weight={700} className={classes.shortcut}>
-          {mac ? '⌘' : 'Ctrl'} + K
-        </Text>
-      </Group>
-    </UnstyledButton>
+    <>
+      <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
+        <UnstyledButton mr={8} {...others} className={cx(classes.root, className)}>
+          <Group spacing="xs">
+            <IconSearch size={14} stroke={1.5} />
+            <Text size="sm" color="dimmed" pr={80}>
+              Buscar
+            </Text>
+            <Text weight={700} className={classes.shortcut}>
+              {mac ? '⌘' : 'Ctrl'} + K
+            </Text>
+          </Group>
+        </UnstyledButton>
+      </MediaQuery>
+      <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+        <ActionIcon variant="outline" mr={8} {...others}>
+          <IconSearch size={18} stroke={1.5} />
+        </ActionIcon>
+      </MediaQuery>
+    </>
   );
 }
 

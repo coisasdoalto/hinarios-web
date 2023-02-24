@@ -8,7 +8,6 @@ function DarkModeToggle() {
   return (
     <ActionIcon
       variant="outline"
-      color={dark ? 'gray' : 'dark'}
       onClick={() => toggleColorScheme()}
       title="Acender/desligar a luz"
     >

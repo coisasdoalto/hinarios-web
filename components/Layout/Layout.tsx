@@ -61,7 +61,7 @@ export default function AppShell({ children }: PropsWithChildren) {
               />
             </MediaQuery>
 
-            <Button variant="subtle" component="a" href="/">
+            <Button variant="subtle" component="a" href="/" sx={{ marginRight: 'auto' }}>
               Hinários
             </Button>
 
