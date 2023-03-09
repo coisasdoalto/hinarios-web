@@ -39,9 +39,9 @@ async function generateHymnsIndex() {
   await Promise.all(
     hymnBooks.map(async (hymnBook) => {
       const hymnFilenames = await Promise.all(
-        (
-          await readdir(joinDataPath(hymnBook.slug))
-        ).filter((hymnFilename) => /\d.*\.json/.test(hymnFilename))
+        (await readdir(joinDataPath(hymnBook.slug)))
+          .filter((hymnFilename) => /\d.*\.json/.test(hymnFilename))
+          .slice(0, hymnBook.slug === 'hinos-e-canticos' ? 10 : undefined)
       );
 
       await (
