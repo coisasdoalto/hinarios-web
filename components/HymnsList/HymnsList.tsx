@@ -10,7 +10,7 @@ function HymnsList({ hymnsIndex, hymnBook }: { hymnsIndex: HymnsIndex; hymnBook:
   const [active, setActive] = useState(0);
 
   const items = hymnsIndex
-    .slice(0, hymnBook.slug === 'hinos-e-canticos' ? 10 : undefined)
+    .slice(0, hymnBook.slug === 'hinos-e-canticos' ? 3 : undefined)
     .map((item, index) => (
       <Fragment key={item.number}>
         <LazyLoad height={59.39} offset={200} once>
