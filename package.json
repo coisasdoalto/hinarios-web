@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "rm -rf ./tmp/hymnsData && yarn data:download && yarn generate:searchIndex && next build",
+    "build": "rm -rf ./tmp/hymnsData && yarn data:download && yarn generate:index && yarn generate:searchIndex && next build",
     "build:only": "next build",
     "analyze": "ANALYZE=true next build",
     "start": "next start",
