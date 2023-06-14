@@ -8,6 +8,10 @@ import {
   useMantineTheme,
   Container,
   Button,
+  TextInput,
+  Group,
+  Textarea,
+  Box,
 } from '@mantine/core';
 
 import VerticalNavigation from '../VerticalNavigation/VerticalNavigation';
@@ -17,6 +21,8 @@ import Search from '../Search/Search';
 export default function AppShell({ children }: PropsWithChildren) {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
+
+  const [feedbackEnabled, setFeedbackEnabled] = useState(false);
 
   return (
     <MantineAppShell
@@ -74,6 +80,31 @@ export default function AppShell({ children }: PropsWithChildren) {
     >
       <Container px={0} py={16}>
         {children}
+      </Container>
+
+      <Container size="xs" mt="xl">
+        {/* <Box>Encontrou um erro ou tem uma sugestão? Escreva aqui</Box> */}
+        <form action="https://formspree.io/f/xayzroby" method="POST">
+          <Textarea
+            placeholder="Encontrou um erro ou tem uma sugestão? Escreva aqui"
+            label={feedbackEnabled ? 'Feedback' : undefined}
+            name={feedbackEnabled ? 'feedback' : undefined}
+            onClick={() => setFeedbackEnabled(true)}
+            withAsterisk
+          />
+
+          {feedbackEnabled && (
+            <>
+              <TextInput label="Nome (opcional)" placeholder="Seu nome" name="name" />
+
+              <TextInput label="Contato (opcional)" placeholder="email ou whats" name="contact" />
+
+              <Group position="right" mt="md">
+                <Button type="submit">Enviar</Button>
+              </Group>
+            </>
+          )}
+        </form>
       </Container>
     </MantineAppShell>
   );

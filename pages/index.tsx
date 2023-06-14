@@ -11,7 +11,7 @@ export default function Home({ hymnBooks }: PageProps) {
   useHymnBooksSave(hymnBooks);
 
   return (
-    <Group>
+    <Group position="center">
       {hymnBooks.map((hymnBook) => (
         <Card key={hymnBook.slug} shadow="sm" p="xl" component={Link} href={`/${hymnBook.slug}`}>
           <Text weight={500} size="lg" m={0}>
