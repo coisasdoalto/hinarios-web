@@ -2,7 +2,7 @@ import { Button } from '@mantine/core';
 import { IconChevronLeft } from '@tabler/icons';
 import { useRouter } from 'next/router';
 
-const BackButton = () => {
+const BackButton = ({ to }: { to?: string }) => {
   const router = useRouter();
 
   return (
@@ -10,7 +10,14 @@ const BackButton = () => {
       leftIcon={<IconChevronLeft />}
       color="gray"
       variant="outline"
-      onClick={() => router.back()}
+      onClick={() => {
+        if (to) {
+          router.push(`/${to}`);
+          return;
+        }
+
+        router.back();
+      }}
       title="Voltar"
     >
       Voltar

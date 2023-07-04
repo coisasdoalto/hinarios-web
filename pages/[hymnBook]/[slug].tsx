@@ -1,5 +1,16 @@
 import { AppProps } from 'next/app';
-import { Box, Container, MantineSize, SegmentedControl, Space, Text, Title } from '@mantine/core';
+import {
+  Anchor,
+  Box,
+  Breadcrumbs,
+  Button,
+  Container,
+  MantineSize,
+  SegmentedControl,
+  Space,
+  Text,
+  Title,
+} from '@mantine/core';
 import { GetStaticPaths, GetStaticProps } from 'next';
 
 import { Fragment, useEffect, useState } from 'react';
@@ -8,9 +19,11 @@ import { Hymn, hymnSchema } from '../../schemas/hymn';
 import BackButton from '../../components/BackButton/BackButton';
 import getHymnBooks from '../../data/getHymnBooks';
 import { HymnBook } from '../../schemas/hymnBook';
-import { useHymnBooksSave } from '../../context/HymnBooks';
+import { useHymnBooks, useHymnBooksSave } from '../../context/HymnBooks';
 import getParsedData from '../../data/getParsedData';
 import getHymnsIndex from '../../data/getHymnsIndex';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const AddBreakLine = ({ children }: { children: string }) => (
   <>
@@ -25,7 +38,7 @@ const AddBreakLine = ({ children }: { children: string }) => (
 
 const validateFontSize = (fontSize: string): fontSize is MantineSize => /md|lg|xl/.test(fontSize);
 
-type PageProps = { content: Hymn; hymnBooks: HymnBook[] };
+type PageProps = { content: Hymn; hymnBooks: HymnBook[]; hymnBook: string };
 
 export default function HymnView(props: AppProps & PageProps) {
   const {
@@ -54,9 +67,19 @@ export default function HymnView(props: AppProps & PageProps) {
     </Text>
   );
 
+  const router = useRouter();
+
+  const [hymnBooks] = useHymnBooks();
+
+  const hymnBook = hymnBooks?.find((item) => item.slug === router.query.hymnBook);
+
   return (
     <Container size="xs">
-      <BackButton />
+      {/* <Title order={2} size="h3">
+        {hymnBook?.name}
+      </Title> */}
+
+      <BackButton to={hymnBook?.slug} />
 
       <Space h="md" />
 
@@ -135,6 +158,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async (context) => {
   const hymnBooks = await getHymnBooks();
 
   return {
-    props: { content, hymnBooks },
+    props: { content, hymnBooks, hymnBook },
   };
 };

@@ -12,17 +12,29 @@ import {
   Group,
   Textarea,
   Box,
+  Breadcrumbs,
 } from '@mantine/core';
 
 import VerticalNavigation from '../VerticalNavigation/VerticalNavigation';
 import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
 import Search from '../Search/Search';
+import { useRouter } from 'next/router';
+import { useHymnBooks } from '../../context/HymnBooks';
+import Link from 'next/link';
 
 export default function AppShell({ children }: PropsWithChildren) {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
 
   const [feedbackEnabled, setFeedbackEnabled] = useState(false);
+
+  const router = useRouter();
+
+  // console.log(getHymnBookInfo(String(router.query.hymnBook) || ''));
+
+  const [hymnBooks] = useHymnBooks();
+
+  const hymnBook = hymnBooks?.find((item) => item.slug === router.query.hymnBook);
 
   return (
     <MantineAppShell
@@ -67,9 +79,20 @@ export default function AppShell({ children }: PropsWithChildren) {
               />
             </MediaQuery>
 
-            <Button variant="subtle" component="a" href="/" sx={{ marginRight: 'auto' }}>
-              Hinários
-            </Button>
+            <Breadcrumbs sx={{ marginRight: 'auto' }}>
+              <Button variant="subtle" component={Link} href="/" compact>
+                Hinários
+              </Button>
+              {hymnBook && (
+                <Button variant="subtle" component={Link} href={`/${hymnBook.slug}`} compact>
+                  {hymnBook.name
+                    .split(' ')
+                    .map((item) => item[0])
+                    .filter((item) => /[A-Z]/.test(item))
+                    .join('')}
+                </Button>
+              )}
+            </Breadcrumbs>
 
             <Search />
 
