@@ -11086,6 +11086,11 @@ nested-error-stacks@^2.0.0, nested-error-stacks@^2.1.0:
   resolved "https://registry.yarnpkg.com/nested-error-stacks/-/nested-error-stacks-2.1.1.tgz#26c8a3cee6cc05fbcf1e333cd2fc3e003326c0b5"
   integrity sha512-9iN1ka/9zmX1ZvLV9ewJYEk9h7RyRRtqdK0woXcqohu8EWIerfPUjYJPg0ULy0UqP7cslmdGc8xKDJcojlKiaw==
 
+next-compose-plugins@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/next-compose-plugins/-/next-compose-plugins-2.2.1.tgz#020fc53f275a7e719d62521bef4300fbb6fde5ab"
+  integrity sha512-OjJ+fV15FXO2uQXQagLD4C0abYErBjyjE0I0FHpOEIB8upw0hg1ldFP6cqHTJBH1cZqy96OeR3u1dJ+Ez2D4Bg==
+
 next-pwa@^5.6.0:
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/next-pwa/-/next-pwa-5.6.0.tgz#f7b1960c4fdd7be4253eb9b41b612ac773392bf4"
@@ -14648,6 +14653,11 @@ webpack-log@^2.0.0:
   dependencies:
     ansi-colors "^3.0.0"
     uuid "^3.3.2"
+
+webpack-shell-plugin-next@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/webpack-shell-plugin-next/-/webpack-shell-plugin-next-2.3.1.tgz#a7bcf7aeeb4143ec8de261194e2b029459b3ae6d"
+  integrity sha512-+ozr/BcsuPh2R6j4oxmu9qJCInhhDCQ+Lb/sSUNHuXjoGj+myxxZyjucHze+K9dCoIo22gAoK1yuCP/gSnpUNg==
 
 webpack-sources@^1.4.0, webpack-sources@^1.4.1, webpack-sources@^1.4.3:
   version "1.4.3"

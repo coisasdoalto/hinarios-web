@@ -1,8 +1,11 @@
+/* eslint-disable no-restricted-globals */
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import posthog from 'posthog-js';
+import { useEffect } from 'react';
+import { Workbox } from 'workbox-window';
 import Layout from '../components/Layout/Layout';
 import useColorScheme from '../hooks/useColorScheme';
 import { HymnBooksProvider, useCreateHymnBooksCache } from '../context/HymnBooks';
@@ -19,6 +22,45 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { colorScheme, toggleColorScheme } = useColorScheme();
 
   const hymnBooksCache = useCreateHymnBooksCache();
+
+  // useEffect(() => {
+  //   if (
+  //     typeof window !== 'undefined' &&
+  //     'serviceWorker' in navigator &&
+  //     (window as any).workbox !== undefined
+  //   ) {
+  //     const wb: Workbox = (window as any).workbox;
+
+  //     wb.addEventListener('activated', async (event) => {
+  //       console.log(`Event ${event.type} is triggered.`);
+  //       console.log(event);
+
+  //       const manifestResponse = await fetch('/build-manifest.json');
+  //       const manifest = await manifestResponse.json();
+
+  //       const urlsToCache = [
+  //         location.origin,
+  //         ...manifest.pages['/[[...params]]'].map(
+  //           (path: string) => `${location.origin}/_next/${path}`
+  //         ),
+
+  //         `${location.origin}/about`,
+  //         ...manifest.pages['/about'].map((path: string) => `${location.origin}/_next/${path}`),
+
+  //         `${location.origin}/posts`,
+  //         ...manifest.pages['/posts'].map((path: string) => `${location.origin}/_next/${path}`),
+  //       ];
+
+  //       // Send that list of URLs to your router in the service worker.
+  //       wb.messageSW({
+  //         type: 'CACHE_URLS',
+  //         payload: { urlsToCache },
+  //       });
+  //     });
+
+  //     wb.register();
+  //   }
+  // }, []);
 
   return (
     <>
