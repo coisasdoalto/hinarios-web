@@ -24,6 +24,7 @@ module.exports = async (phase, { defaultConfig }) => {
     },
     reactStrictMode: false,
     experimental: { scrollRestoration: true },
+    trailingSlash: true
   };
 
   const pwaConfig = {
@@ -55,8 +56,8 @@ module.exports = async (phase, { defaultConfig }) => {
     ];
   }
 
-  console.log('mmmmmmmmmmmmm');
-  console.log(JSON.stringify(pwaConfig.additionalManifestEntries, null, 2));
+  // console.log('mmmmmmmmmmmmm');
+  // console.log(JSON.stringify(pwaConfig.additionalManifestEntries, null, 2));
 
   // return config
   return withPWA(pwaConfig)(config);
