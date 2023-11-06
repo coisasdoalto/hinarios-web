@@ -100,11 +100,11 @@ async function getGeneratedPrecacheEntries(buildId) {
       precacheJson: true, // no props
       dynamicPages: await getAllPaths(),
     },
-    {
-      route: '/sobre',
-      precacheHtml: true,
-      precacheJson: true,
-    },
+    // {
+    //   route: '/sobre',
+    //   precacheHtml: true,
+    //   precacheJson: true,
+    // },
     // {
     //   route: '/denizens',
     //   precacheHtml: true, // this is now the start url for A2HS
