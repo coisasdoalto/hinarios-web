@@ -1,4 +1,4 @@
-import { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import {
   AppShell as MantineAppShell,
   Navbar,
@@ -11,30 +11,32 @@ import {
   TextInput,
   Group,
   Textarea,
-  Box,
   Breadcrumbs,
 } from '@mantine/core';
 
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 import VerticalNavigation from '../VerticalNavigation/VerticalNavigation';
 import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
 import Search from '../Search/Search';
-import { useRouter } from 'next/router';
 import { useHymnBooks } from '../../context/HymnBooks';
-import Link from 'next/link';
 
 export default function AppShell({ children }: PropsWithChildren) {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
 
   const [feedbackEnabled, setFeedbackEnabled] = useState(false);
+  const [feedbackValue, setFeedbackValue] = useState('');
 
   const router = useRouter();
-
-  // console.log(getHymnBookInfo(String(router.query.hymnBook) || ''));
 
   const [hymnBooks] = useHymnBooks();
 
   const hymnBook = hymnBooks?.find((item) => item.slug === router.query.hymnBook);
+
+  useEffect(() => {
+    setFeedbackEnabled(false);
+  }, []);
 
   return (
     <MantineAppShell
@@ -106,12 +108,13 @@ export default function AppShell({ children }: PropsWithChildren) {
       </Container>
 
       <Container size="xs" mt="xl">
-        {/* <Box>Encontrou um erro ou tem uma sugestão? Escreva aqui</Box> */}
         <form action="https://formspree.io/f/xayzroby" method="POST">
           <Textarea
             placeholder="Encontrou um erro ou tem uma sugestão? Escreva aqui"
             label={feedbackEnabled ? 'Feedback' : undefined}
             name={feedbackEnabled ? 'feedback' : undefined}
+            value={feedbackValue}
+            onChange={(event) => setFeedbackValue(event.target.value)}
             onClick={() => setFeedbackEnabled(true)}
             withAsterisk
           />
