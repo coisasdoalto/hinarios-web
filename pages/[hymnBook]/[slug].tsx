@@ -1,9 +1,6 @@
 import { AppProps } from 'next/app';
 import {
-  Anchor,
   Box,
-  Breadcrumbs,
-  Button,
   Container,
   MantineSize,
   SegmentedControl,
@@ -15,6 +12,7 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 
 import { Fragment, useEffect, useState } from 'react';
 import { z } from 'zod';
+import { useRouter } from 'next/router';
 import { Hymn, hymnSchema } from '../../schemas/hymn';
 import BackButton from '../../components/BackButton/BackButton';
 import getHymnBooks from '../../data/getHymnBooks';
@@ -22,8 +20,6 @@ import { HymnBook } from '../../schemas/hymnBook';
 import { useHymnBooks, useHymnBooksSave } from '../../context/HymnBooks';
 import getParsedData from '../../data/getParsedData';
 import getHymnsIndex from '../../data/getHymnsIndex';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 const AddBreakLine = ({ children }: { children: string }) => (
   <>
@@ -78,11 +74,8 @@ export default function HymnView(props: AppProps & PageProps) {
       {/* <Title order={2} size="h3">
         {hymnBook?.name}
       </Title> */}
-
       <BackButton to={hymnBook?.slug} />
-
       <Space h="md" />
-
       <Title order={1} size="h2">
         {number}. {title}
       </Title>
@@ -91,9 +84,7 @@ export default function HymnView(props: AppProps & PageProps) {
           {subtitle}
         </Title>
       )}
-
       <Space h="md" />
-
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <SegmentedControl
           value={fontSize}
@@ -105,9 +96,7 @@ export default function HymnView(props: AppProps & PageProps) {
           ]}
         />
       </Box>
-
       {!stanzas.length && <Box mt={16}>{chorusComponent}</Box>}
-
       {stanzas.map((stanza, index) => (
         <Fragment key={stanza.number}>
           {/* <Text>{stanza.number}.</Text> */}
@@ -119,6 +108,24 @@ export default function HymnView(props: AppProps & PageProps) {
           {index === 0 && chorus && chorusComponent}
         </Fragment>
       ))}
+
+      {hymnBook?.slug === 'hinos-e-canticos' ? (
+        <>
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+          <audio
+            style={{ width: '100%', marginTop: 30 }}
+            controls
+            src={`https://pub-2792cfba2bfd44b7bfe9fcfbd02cbfcc.r2.dev/variant1/${number}.mp3`}
+          />
+
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+          <audio
+            style={{ width: '100%', marginTop: 10 }}
+            controls
+            src={`https://pub-2792cfba2bfd44b7bfe9fcfbd02cbfcc.r2.dev/variant2/${number}.mp3`}
+          />
+        </>
+      ) : null}
     </Container>
   );
 }
