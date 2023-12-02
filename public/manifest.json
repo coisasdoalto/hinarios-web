@@ -8,7 +8,7 @@
   "scope": "/",
   "short_name": "Hinários App",
   "start_url": "/",
-  "theme_color": "#1f90ef",
+  "theme_color": "#25262B",
   "categories": ["books", "music", "lifestyle"],
   "screenshots": [],
   "icons": [
