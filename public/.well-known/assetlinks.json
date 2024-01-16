@@ -3,6 +3,6 @@
       "target": {
         "namespace": "android_app",
         "package_name": "app.hinarios.twa",
-        "sha256_cert_fingerprints": ["18:FE:9F:67:B1:D4:F4:56:18:E2:D7:EA:D2:9D:96:A3:68:4B:02:03:A0:1E:C0:DE:9D:90:94:BD:F1:1D:8F:65"]
+        "sha256_cert_fingerprints": ["B6:E7:95:2C:A4:2F:97:A4:F2:27:65:E6:DE:14:2C:F3:8B:ED:FE:CE:A0:04:AB:9F:B3:92:B4:44:8B:41:C5:46"]
       }
     }]
