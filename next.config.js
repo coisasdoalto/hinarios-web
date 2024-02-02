@@ -24,9 +24,12 @@ module.exports = async (phase, { defaultConfig }) => {
     },
     reactStrictMode: false,
     experimental: { scrollRestoration: true },
-    trailingSlash: true
+    trailingSlash: true,
   };
 
+  /**
+   * @type { import("next-pwa").PWAConfig }
+   */
   const pwaConfig = {
     dest: 'public',
     dynamicStartUrl: false, // precache home page instead of storing it in runtime cache by default

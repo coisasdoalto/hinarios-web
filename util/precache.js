@@ -93,29 +93,45 @@ async function getGeneratedPrecacheEntries(buildId) {
     return;
   }
 
+  const allPaths = await getAllPaths();
+
+  const paths = {
+    'corinhos-e-canticos-de-salvacao': allPaths.filter((path) =>
+      path.includes('corinhos-e-canticos-de-salvacao')
+    ),
+    'hinos-e-canticos': allPaths.filter((path) => path.includes('hinos-e-canticos')),
+    'hinos-espirituais': allPaths.filter((path) => path.includes('hinos-espirituais')),
+  };
+
   const pages = [
     {
       route: '/',
       precacheHtml: true, // next-pwa already caches the home page
       precacheJson: true, // no props
-      dynamicPages: await getAllPaths(),
     },
-    // {
-    //   route: '/sobre',
-    //   precacheHtml: true,
-    //   precacheJson: true,
-    // },
-    // {
-    //   route: '/denizens',
-    //   precacheHtml: true, // this is now the start url for A2HS
-    //   precacheJson: true,
-    // },
-    // {
-    //   route: '/denizens/',
-    //   precacheHtml: false,
-    //   precacheJson: true,
-    //   dynamicPages: getDenizenPages(),
-    // },
+    {
+      route: '/sobre',
+      precacheHtml: true,
+      precacheJson: false,
+    },
+    {
+      route: '/corinhos-e-canticos-de-salvacao',
+      dynamicPages: paths['corinhos-e-canticos-de-salvacao'],
+      precacheHtml: true,
+      precacheJson: true,
+    },
+    {
+      route: '/hinos-e-canticos',
+      dynamicPages: paths['hinos-e-canticos'],
+      precacheHtml: true,
+      precacheJson: true,
+    },
+    {
+      route: '/hinos-espirituais',
+      dynamicPages: paths['hinos-espirituais'],
+      precacheHtml: true,
+      precacheJson: true,
+    },
   ];
 
   console.log('the pages', pages);
