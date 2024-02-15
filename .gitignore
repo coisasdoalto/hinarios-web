@@ -37,7 +37,19 @@ yarn-error.log*
 # storybook
 storybook-static.env*
 
+# local data
 public/hymnBooks.json
-cert.json
 /tmp
 /search
+
+# Google Credentials
+cert.json
+
+# Next-PWA, Workbox
+# Thanks: https://github.com/shadowwalker/next-pwa/tree/master/examples/custom-ts-worker#recommend-gitignore
+**/public/workbox-*.js
+**/public/workbox-*.js.map
+**/public/sw.js
+**/public/sw.js.map
+**/public/worker-*.js
+**/public/worker-*.js.map
