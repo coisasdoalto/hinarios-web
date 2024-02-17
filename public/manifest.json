@@ -10,7 +10,7 @@
   "dir": "ltr",
   "display": "standalone",
   "name": "Hinários App",
-  "orientation": "any",
+  "orientation": "portrait",
   "scope": "/",
   "short_name": "Hinários App",
   "start_url": "/",

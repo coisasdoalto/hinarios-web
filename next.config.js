@@ -1,18 +1,4 @@
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-});
-
 const withPWA = require('next-pwa');
-
-// module.exports = withBundleAnalyzer(
-//   withPWA({
-//     reactStrictMode: false,
-//     eslint: {
-//       ignoreDuringBuilds: true,
-//     },
-//     experimental: { scrollRestoration: true },
-//   })
-// );
 
 const { PHASE_PRODUCTION_BUILD } = require('next/constants');
 
@@ -32,10 +18,10 @@ module.exports = async (phase, { defaultConfig }) => {
    */
   const pwaConfig = {
     dest: 'public',
-    dynamicStartUrl: false, // precache home page instead of storing it in runtime cache by default
+    // dynamicStartUrl: false, // precache home page instead of storing it in runtime cache by default
     // register: false,
     // skipWaiting: false,
-    buildExcludes: [/middleware-manifest\.json$/], // for Next 12, see https://github.com/shadowwalker/next-pwa/issues/288
+    // buildExcludes: [/middleware-manifest\.json$/], // for Next 12, see https://github.com/shadowwalker/next-pwa/issues/288
   };
 
   if (phase === PHASE_PRODUCTION_BUILD) {

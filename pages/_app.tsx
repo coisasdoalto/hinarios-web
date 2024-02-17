@@ -1,14 +1,12 @@
 /* eslint-disable no-restricted-globals */
+import { ColorScheme, ColorSchemeProvider, MantineProvider } from '@mantine/core';
+import { NotificationsProvider } from '@mantine/notifications';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core';
-import { NotificationsProvider } from '@mantine/notifications';
 import posthog from 'posthog-js';
-import { useEffect } from 'react';
-import { Workbox } from 'workbox-window';
 import Layout from '../components/Layout/Layout';
-import useColorScheme from '../hooks/useColorScheme';
 import { HymnBooksProvider, useCreateHymnBooksCache } from '../context/HymnBooks';
+import useColorScheme from '../hooks/useColorScheme';
 
 if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
   posthog.init('phc_sHWgUAgxkRXAAv7NSyPnkUWaOzM0hnccRL644rlXpb1', {
@@ -114,6 +112,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
         <link rel='apple-touch-startup-image' href='/images/apple_splash_750.png' sizes='750x1334' />
         <link rel='apple-touch-startup-image' href='/images/apple_splash_640.png' sizes='640x1136' />
         */}
+
       </Head>
 
       <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>

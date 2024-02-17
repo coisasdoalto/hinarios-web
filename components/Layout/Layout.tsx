@@ -1,25 +1,16 @@
-import { PropsWithChildren, useEffect, useState } from 'react';
 import {
-  AppShell as MantineAppShell,
-  Navbar,
-  Header,
-  MediaQuery,
-  Burger,
-  useMantineTheme,
-  Container,
-  Button,
-  TextInput,
-  Group,
-  Textarea,
-  Breadcrumbs,
+  AppShell as MantineAppShell, Breadcrumbs, Burger, Button, Container, Group, Header,
+  MediaQuery, Navbar, Textarea, TextInput, useMantineTheme,
 } from '@mantine/core';
+import { PropsWithChildren, useEffect, useState } from 'react';
 
-import { useRouter } from 'next/router';
 import Link from 'next/link';
-import VerticalNavigation from '../VerticalNavigation/VerticalNavigation';
-import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
-import Search from '../Search/Search';
+import { useRouter } from 'next/router';
 import { useHymnBooks } from '../../context/HymnBooks';
+import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
+import { DownloadButton } from '../DownloadButton';
+import Search from '../Search/Search';
+import VerticalNavigation from '../VerticalNavigation/VerticalNavigation';
 
 export default function AppShell({ children }: PropsWithChildren) {
   const theme = useMantineTheme();
@@ -96,9 +87,13 @@ export default function AppShell({ children }: PropsWithChildren) {
               )}
             </Breadcrumbs>
 
-            <Search />
+            <Group spacing={8}>
+              <Search />
 
-            <DarkModeToggle />
+              <DarkModeToggle />
+
+              <DownloadButton />
+            </Group>
           </div>
         </Header>
       }
