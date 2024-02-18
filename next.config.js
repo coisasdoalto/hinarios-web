@@ -36,7 +36,10 @@ module.exports = async (phase, { defaultConfig }) => {
     // register: false,
     // skipWaiting: false,
     buildExcludes: [/middleware-manifest\.json$/], // for Next 12, see https://github.com/shadowwalker/next-pwa/issues/288
+    maximumFileSizeToCacheInBytes: 1000000,
   };
+
+  console.log('phase', phase);
 
   if (phase === PHASE_PRODUCTION_BUILD) {
     // Attributes generateBuildId and additionalManifestEntries are only needed
@@ -59,8 +62,8 @@ module.exports = async (phase, { defaultConfig }) => {
     ];
   }
 
-  // console.log('mmmmmmmmmmmmm');
-  // console.log(JSON.stringify(pwaConfig.additionalManifestEntries, null, 2));
+  console.log('pwaConfig.additionalManifestEntries');
+  console.log(JSON.stringify(pwaConfig.additionalManifestEntries, null, 2));
 
   // return config
   return withPWA(pwaConfig)(config);

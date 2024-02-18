@@ -96,11 +96,15 @@ async function getGeneratedPrecacheEntries(buildId) {
   const allPaths = await getAllPaths();
 
   const paths = {
-    'corinhos-e-canticos-de-salvacao': allPaths.filter((path) =>
-      path.includes('corinhos-e-canticos-de-salvacao')
-    ),
-    'hinos-e-canticos': allPaths.filter((path) => path.includes('hinos-e-canticos')),
-    'hinos-espirituais': allPaths.filter((path) => path.includes('hinos-espirituais')),
+    'corinhos-e-canticos-de-salvacao': allPaths
+      .filter((path) => path.includes('corinhos-e-canticos-de-salvacao'))
+      .map((hymn) => hymn.replace('corinhos-e-canticos-de-salvacao', '')),
+    'hinos-e-canticos': allPaths
+      .filter((path) => path.includes('hinos-e-canticos'))
+      .map((hymn) => hymn.replace('hinos-e-canticos', '')),
+    'hinos-espirituais': allPaths
+      .filter((path) => path.includes('hinos-espirituais'))
+      .map((hymn) => hymn.replace('hinos-espirituais', '')),
   };
 
   const pages = [
