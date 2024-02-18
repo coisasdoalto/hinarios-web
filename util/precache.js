@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const { readFile } = require('fs/promises');
 
-async function getAllPaths() {
+export async function getAllPaths() {
   const paths = JSON.parse(
     await readFile(path.join('tmp', 'pathsForPrecache.json'), { encoding: 'utf-8' })
   );

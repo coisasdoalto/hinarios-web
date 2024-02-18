@@ -11,14 +11,25 @@ async function generatePathsForPrecache() {
       hymnBooks.map(async (hymnBook) => {
         const hymnsIndex = await getHymnsIndex(hymnBook.slug);
 
-        const paths = hymnsIndex.map(({ slug }) => `${hymnBook.slug}/${slug}`);
+        const hymnBookPage = `/${hymnBook.slug}/`;
 
-        return [hymnBook.slug, ...paths];
+        const paths = hymnsIndex.map(({ slug }) => `/${hymnBook.slug}/${slug}/`);
+
+        return [hymnBookPage, ...paths];
       })
     )
   ).flat();
 
   await writeFile(path.join('tmp', 'pathsForPrecache.json'), JSON.stringify(allPaths, null, 2));
+
+  await writeFile(
+    path.join('tmp', 'pathsForPrecacheV2.json'),
+    JSON.stringify(
+      allPaths.map((url) => ({ url, revision: '3' })),
+      null,
+      2
+    )
+  );
 
   return allPaths;
 }
