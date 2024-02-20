@@ -22,15 +22,6 @@ async function generatePathsForPrecache() {
 
   await writeFile(path.join('tmp', 'pathsForPrecache.json'), JSON.stringify(allPaths, null, 2));
 
-  await writeFile(
-    path.join('tmp', 'pathsForPrecacheV2.json'),
-    JSON.stringify(
-      allPaths.map((url) => ({ url, revision: '3' })),
-      null,
-      2
-    )
-  );
-
   return allPaths;
 }
 
