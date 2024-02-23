@@ -1,13 +1,13 @@
 import { ActionIcon, DefaultProps, Group, MediaQuery, Text, UnstyledButton } from '@mantine/core';
-import { SpotlightProvider, openSpotlight } from '@mantine/spotlight';
+import { useOs } from '@mantine/hooks';
 import type { SpotlightAction } from '@mantine/spotlight';
+import { SpotlightProvider, openSpotlight } from '@mantine/spotlight';
 import { IconSearch } from '@tabler/icons';
 import elasticlunr from 'elasticlunr';
 import { NextRouter, useRouter } from 'next/router';
-import { useOs } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
-import searchIndexJson from '../../search/searchIndex.json';
 import { HymnBook } from '../../schemas/hymnBook';
+import searchIndexJson from '../../search/searchIndex.json';
 import useStyles from './SearchControl.styles';
 
 const searchIndex = elasticlunr.Index.load<{
@@ -39,7 +39,7 @@ export function SearchControl({ className, ...others }: SearchControlProps) {
   return (
     <>
       <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
-        <UnstyledButton mr={8} {...others} className={cx(classes.root, className)}>
+        <UnstyledButton {...others} className={cx(classes.root, className)}>
           <Group spacing="xs">
             <IconSearch size={14} stroke={1.5} />
             <Text size="sm" color="dimmed" pr={80}>
@@ -52,7 +52,7 @@ export function SearchControl({ className, ...others }: SearchControlProps) {
         </UnstyledButton>
       </MediaQuery>
       <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
-        <ActionIcon variant="outline" mr={8} {...others}>
+        <ActionIcon variant="outline" {...others}>
           <IconSearch size={18} stroke={1.5} />
         </ActionIcon>
       </MediaQuery>

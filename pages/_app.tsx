@@ -1,12 +1,14 @@
 /* eslint-disable no-restricted-globals */
+import { ColorScheme, ColorSchemeProvider, MantineProvider } from '@mantine/core';
+import { NotificationsProvider } from '@mantine/notifications';
+import type { Session } from 'next-auth';
+import { SessionProvider } from 'next-auth/react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core';
-import { NotificationsProvider } from '@mantine/notifications';
 import posthog from 'posthog-js';
 import Layout from '../components/Layout/Layout';
-import useColorScheme from '../hooks/useColorScheme';
 import { HymnBooksProvider, useCreateHymnBooksCache } from '../context/HymnBooks';
+import useColorScheme from '../hooks/useColorScheme';
 
 if (
   process.env.ENABLE_POSTHOG === 'true' &&
@@ -18,7 +20,7 @@ if (
   });
 }
 
-export default function App(props: AppProps & { colorScheme: ColorScheme }) {
+export default function App(props: AppProps & { colorScheme: ColorScheme, session: Session }) {
   const { Component, pageProps } = props;
 
   const { colorScheme, toggleColorScheme } = useColorScheme();
@@ -79,17 +81,19 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
         */}
       </Head>
 
-      <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-        <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
-          <NotificationsProvider>
-            <HymnBooksProvider hymnBooksCache={hymnBooksCache}>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </HymnBooksProvider>
-          </NotificationsProvider>
-        </MantineProvider>
-      </ColorSchemeProvider>
+      <SessionProvider session={props.session}>
+        <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+          <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
+            <NotificationsProvider>
+              <HymnBooksProvider hymnBooksCache={hymnBooksCache}>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </HymnBooksProvider>
+            </NotificationsProvider>
+          </MantineProvider>
+        </ColorSchemeProvider>
+      </SessionProvider>
     </>
   );
 }
