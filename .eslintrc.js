@@ -12,9 +12,6 @@ module.exports = {
       extends: ['plugin:testing-library/react'],
     },
   ],
-  parserOptions: {
-    project: './tsconfig.json',
-  },
   rules: {
     'react/react-in-jsx-scope': 'off',
   },
