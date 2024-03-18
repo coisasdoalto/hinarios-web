@@ -21,6 +21,15 @@ import LoginMenu from '../LoginMenu';
 import Search from '../Search/Search';
 import VerticalNavigation from '../VerticalNavigation/VerticalNavigation';
 
+async function persist(onPersisted: (result: any) => void) {
+  // Request persistent storage for site
+  if (navigator.storage && navigator.storage.persisted) {
+    const isPersisted = await navigator.storage.persisted();
+    onPersisted(isPersisted);
+    console.log(`Persisted storage granted: ${isPersisted}`);
+  }
+}
+
 export default function AppShell({ children }: PropsWithChildren) {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
@@ -36,6 +45,12 @@ export default function AppShell({ children }: PropsWithChildren) {
 
   useEffect(() => {
     setFeedbackEnabled(false);
+  }, []);
+
+  const [persistedResult, setPersistedResult] = useState(null);
+
+  useEffect(() => {
+    persist(setPersistedResult);
   }, []);
 
   return (
@@ -105,6 +120,8 @@ export default function AppShell({ children }: PropsWithChildren) {
         </Header>
       }
     >
+      <pre>result: {JSON.stringify(persistedResult)}</pre>
+
       <Container px={0} py={16}>
         {children}
       </Container>
