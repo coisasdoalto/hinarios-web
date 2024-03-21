@@ -1,6 +1,7 @@
 /* eslint-disable no-restricted-globals */
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
 import { AppProps } from 'next/app';
@@ -10,17 +11,19 @@ import Layout from '../components/Layout/Layout';
 import { HymnBooksProvider, useCreateHymnBooksCache } from '../context/HymnBooks';
 import useColorScheme from '../hooks/useColorScheme';
 
-if (
-  process.env.ENABLE_POSTHOG === 'true' &&
-  process.env.NODE_ENV === 'production' &&
-  typeof window !== 'undefined'
-) {
+if (typeof window !== 'undefined') {
   posthog.init('phc_sHWgUAgxkRXAAv7NSyPnkUWaOzM0hnccRL644rlXpb1', {
     api_host: 'https://app.posthog.com',
+    autocapture: process.env.NODE_ENV === 'production',
+    capture_pageview: process.env.NODE_ENV === 'production',
+    capture_performance: process.env.NODE_ENV === 'production',
+    capture_pageleave: process.env.NODE_ENV === 'production',
   });
 }
 
-export default function App(props: AppProps & { colorScheme: ColorScheme, session: Session }) {
+export const queryClient = new QueryClient();
+
+export default function App(props: AppProps & { colorScheme: ColorScheme; session: Session }) {
   const { Component, pageProps } = props;
 
   const { colorScheme, toggleColorScheme } = useColorScheme();
@@ -86,9 +89,11 @@ export default function App(props: AppProps & { colorScheme: ColorScheme, sessio
           <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
             <NotificationsProvider>
               <HymnBooksProvider hymnBooksCache={hymnBooksCache}>
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
+                <QueryClientProvider client={queryClient}>
+                  <Layout>
+                    <Component {...pageProps} />
+                  </Layout>
+                </QueryClientProvider>
               </HymnBooksProvider>
             </NotificationsProvider>
           </MantineProvider>
