@@ -26,7 +26,7 @@ function LoginButton() {
       >
         <IconLogout size={18} />
       </ActionIcon>
-      <Avatar src={session.user?.image} title={session.user?.name ?? "User"} alt={`Foto de ${session.user?.name}`} radius="xl">
+      <Avatar src={session.user?.image} size={28} title={session.user?.name ?? "User"} alt={`Foto de ${session.user?.name}`} radius="xl">
         {session.user?.name ?? "User"}
       </Avatar>
     </Group>
