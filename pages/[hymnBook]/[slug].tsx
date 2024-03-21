@@ -1,7 +1,7 @@
-import { AppProps } from 'next/app';
 import {
   Box,
   Container,
+  Flex,
   MantineSize,
   SegmentedControl,
   Space,
@@ -9,17 +9,20 @@ import {
   Title,
 } from '@mantine/core';
 import { GetStaticPaths, GetStaticProps } from 'next';
-
-import { Fragment, useEffect, useState } from 'react';
-import { z } from 'zod';
+import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
-import { Hymn, hymnSchema } from '../../schemas/hymn';
+import { Fragment, useEffect, useState } from 'react';
+
+import { z } from 'zod';
+
 import BackButton from '../../components/BackButton/BackButton';
-import getHymnBooks from '../../data/getHymnBooks';
-import { HymnBook } from '../../schemas/hymnBook';
+import { FavoriteButton } from '../../components/FavoriteButton';
 import { useHymnBooks, useHymnBooksSave } from '../../context/HymnBooks';
-import getParsedData from '../../data/getParsedData';
+import getHymnBooks from '../../data/getHymnBooks';
 import getHymnsIndex from '../../data/getHymnsIndex';
+import getParsedData from '../../data/getParsedData';
+import { Hymn, hymnSchema } from '../../schemas/hymn';
+import { HymnBook } from '../../schemas/hymnBook';
 
 const AddBreakLine = ({ children }: { children: string }) => (
   <>
@@ -72,18 +75,24 @@ export default function HymnView(props: AppProps & PageProps) {
   return (
     <Container size="xs">
       {/* <Title order={2} size="h3">
-        {hymnBook?.name}
+        {hymnBook?.name
       </Title> */}
       <BackButton to={hymnBook?.slug} />
       <Space h="md" />
-      <Title order={1} size="h2">
-        {number}. {title}
-      </Title>
-      {subtitle && (
-        <Title order={5} color="dimmed" italic>
-          {subtitle}
-        </Title>
-      )}
+      <Flex align="flex-start" gap="sm">
+        <div>
+          <Title order={1} size="h2">
+            {number}. {title}
+          </Title>
+          {subtitle && (
+            <Title order={5} color="dimmed" italic>
+              {subtitle}
+            </Title>
+          )}
+        </div>
+
+        <FavoriteButton hymnSlug={String(router.query.slug)} />
+      </Flex>
       <Space h="md" />
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <SegmentedControl
