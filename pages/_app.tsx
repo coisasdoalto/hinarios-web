@@ -2,14 +2,14 @@
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import type { Session } from 'next-auth';
-import { SessionProvider } from 'next-auth/react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import posthog from 'posthog-js';
 import Layout from '../components/Layout/Layout';
 import { HymnBooksProvider, useCreateHymnBooksCache } from '../context/HymnBooks';
 import useColorScheme from '../hooks/useColorScheme';
+
+import '../firebase/web';
 
 if (typeof window !== 'undefined') {
   posthog.init('phc_sHWgUAgxkRXAAv7NSyPnkUWaOzM0hnccRL644rlXpb1', {
@@ -23,7 +23,7 @@ if (typeof window !== 'undefined') {
 
 export const queryClient = new QueryClient();
 
-export default function App(props: AppProps & { colorScheme: ColorScheme; session: Session }) {
+export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
 
   const { colorScheme, toggleColorScheme } = useColorScheme();
@@ -84,21 +84,19 @@ export default function App(props: AppProps & { colorScheme: ColorScheme; sessio
         */}
       </Head>
 
-      <SessionProvider session={props.session}>
-        <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-          <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
-            <NotificationsProvider>
-              <HymnBooksProvider hymnBooksCache={hymnBooksCache}>
-                <QueryClientProvider client={queryClient}>
-                  <Layout>
-                    <Component {...pageProps} />
-                  </Layout>
-                </QueryClientProvider>
-              </HymnBooksProvider>
-            </NotificationsProvider>
-          </MantineProvider>
-        </ColorSchemeProvider>
-      </SessionProvider>
+      <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+        <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
+          <NotificationsProvider>
+            <HymnBooksProvider hymnBooksCache={hymnBooksCache}>
+              <QueryClientProvider client={queryClient}>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </QueryClientProvider>
+            </HymnBooksProvider>
+          </NotificationsProvider>
+        </MantineProvider>
+      </ColorSchemeProvider>
     </>
   );
 }

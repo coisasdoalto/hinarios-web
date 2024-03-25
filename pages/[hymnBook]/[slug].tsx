@@ -16,7 +16,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { z } from 'zod';
 
 import BackButton from '../../components/BackButton/BackButton';
-import { FavoriteButton } from '../../components/FavoriteButton';
+import { BookmarkButton } from '../../components/BookmarkButton';
 import { useHymnBooks, useHymnBooksSave } from '../../context/HymnBooks';
 import getHymnBooks from '../../data/getHymnBooks';
 import getHymnsIndex from '../../data/getHymnsIndex';
@@ -91,7 +91,7 @@ export default function HymnView(props: AppProps & PageProps) {
           )}
         </div>
 
-        <FavoriteButton hymnSlug={String(router.query.slug)} />
+        <BookmarkButton />
       </Flex>
       <Space h="md" />
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>

@@ -1,33 +1,34 @@
 import { ActionIcon, Avatar, Group } from '@mantine/core';
 import { IconLogin, IconLogout } from '@tabler/icons';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signInWithGoogle, signOut } from '../../firebase/web/auth';
+import { useUser } from '../../hooks/useUser';
 
 function LoginButton() {
-  const { data: session } = useSession()
+  const user = useUser();
 
-  if (!session) {
+  if (!user) {
     return (
-      <ActionIcon
-        variant="outline"
-        onClick={() => signIn("google")}
-        title="Fazer login"
-      >
+      <ActionIcon variant="outline" onClick={() => signInWithGoogle()} title="Fazer login">
         <IconLogin size={18} />
       </ActionIcon>
     );
   }
 
+  const userName = user.displayName ?? 'User';
+
   return (
     <Group>
-      <ActionIcon
-        variant="outline"
-        onClick={() => signOut()}
-        title="Sair"
-      >
+      <ActionIcon variant="outline" onClick={() => signOut()} title="Sair">
         <IconLogout size={18} />
       </ActionIcon>
-      <Avatar src={session.user?.image} size={28} title={session.user?.name ?? "User"} alt={`Foto de ${session.user?.name}`} radius="xl">
-        {session.user?.name ?? "User"}
+      <Avatar
+        src={user.photoURL}
+        size={28}
+        title={userName}
+        alt={`Foto de ${userName}`}
+        radius="xl"
+      >
+        {userName}
       </Avatar>
     </Group>
   );
