@@ -17,8 +17,7 @@ import { PropsWithChildren, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useHymnBooks } from '../../context/HymnBooks';
-import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
-import LoginButton from '../LoginButton';
+import LoginMenu from '../LoginMenu';
 import Search from '../Search/Search';
 import VerticalNavigation from '../VerticalNavigation/VerticalNavigation';
 
@@ -100,9 +99,7 @@ export default function AppShell({ children }: PropsWithChildren) {
             <Group spacing="xs">
               <Search />
 
-              <DarkModeToggle />
-
-              <LoginButton />
+              <LoginMenu />
             </Group>
           </div>
         </Header>

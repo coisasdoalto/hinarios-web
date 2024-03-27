@@ -1,6 +1,5 @@
 import { ActionIcon, Tooltip } from '@mantine/core';
-import { IconHeart } from '@tabler/icons';
-import { IconHeartFilled } from '@tabler/icons-react';
+import { IconBookmark, IconBookmarkFilled } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 
@@ -50,8 +49,8 @@ export function BookmarkButton() {
 
   return (
     <Tooltip label={tooltipLabel}>
-      <ActionIcon variant="subtle" onClick={handleClick}>
-        {isBookmarked ? <IconHeartFilled /> : <IconHeart />}
+      <ActionIcon variant="subtle" onClick={handleClick} size="lg">
+        {isBookmarked ? <IconBookmarkFilled stroke={1.5} /> : <IconBookmark stroke={1.5} />}
       </ActionIcon>
     </Tooltip>
   );

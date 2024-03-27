@@ -77,7 +77,11 @@ export default function HymnView(props: AppProps & PageProps) {
       {/* <Title order={2} size="h3">
         {hymnBook?.name
       </Title> */}
-      <BackButton to={hymnBook?.slug} />
+      <Flex justify="space-between">
+        <BackButton to={hymnBook?.slug} />
+
+        <BookmarkButton />
+      </Flex>
       <Space h="md" />
       <Flex align="flex-start" gap="sm">
         <div>
@@ -90,8 +94,6 @@ export default function HymnView(props: AppProps & PageProps) {
             </Title>
           )}
         </div>
-
-        <BookmarkButton />
       </Flex>
       <Space h="md" />
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>

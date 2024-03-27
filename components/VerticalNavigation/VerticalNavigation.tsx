@@ -1,7 +1,8 @@
-import { Box, NavLink } from '@mantine/core';
-import { IconInfoSquare, IconBooks, IconHome } from '@tabler/icons';
+import { Box, Divider, NavLink } from '@mantine/core';
+import { IconBooks, IconHome, IconInfoSquare } from '@tabler/icons';
 import Link from 'next/link';
 import { useHymnBooks } from '../../context/HymnBooks';
+import { DarkModeToggle } from './DarkModeToggle';
 
 function VerticalNavigation({ onNavigation }: { onNavigation: () => void }) {
   const [hymnBooks] = useHymnBooks();
@@ -41,6 +42,10 @@ function VerticalNavigation({ onNavigation }: { onNavigation: () => void }) {
         href="/sobre"
         onClick={onNavigation}
       />
+
+      <Divider my="md" label="Configurações" labelPosition="center" />
+
+      <DarkModeToggle />
     </Box>
   );
 }
