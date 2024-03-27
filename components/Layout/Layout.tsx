@@ -1,25 +1,25 @@
-import { PropsWithChildren, useEffect, useState } from 'react';
 import {
-  AppShell as MantineAppShell,
-  Navbar,
-  Header,
-  MediaQuery,
-  Burger,
-  useMantineTheme,
-  Container,
-  Button,
-  TextInput,
-  Group,
-  Textarea,
   Breadcrumbs,
+  Burger,
+  Button,
+  Container,
+  Group,
+  Header,
+  AppShell as MantineAppShell,
+  MediaQuery,
+  Navbar,
+  TextInput,
+  Textarea,
+  useMantineTheme,
 } from '@mantine/core';
+import { PropsWithChildren, useEffect, useState } from 'react';
 
-import { useRouter } from 'next/router';
 import Link from 'next/link';
-import VerticalNavigation from '../VerticalNavigation/VerticalNavigation';
-import DarkModeToggle from '../DarkModeToggle/DarkModeToggle';
-import Search from '../Search/Search';
+import { useRouter } from 'next/router';
 import { useHymnBooks } from '../../context/HymnBooks';
+import LoginMenu from '../LoginMenu';
+import Search from '../Search/Search';
+import VerticalNavigation from '../VerticalNavigation/VerticalNavigation';
 
 export default function AppShell({ children }: PropsWithChildren) {
   const theme = useMantineTheme();
@@ -96,9 +96,11 @@ export default function AppShell({ children }: PropsWithChildren) {
               )}
             </Breadcrumbs>
 
-            <Search />
+            <Group spacing="xs">
+              <Search />
 
-            <DarkModeToggle />
+              <LoginMenu />
+            </Group>
           </div>
         </Header>
       }

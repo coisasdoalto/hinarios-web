@@ -7,9 +7,10 @@ const BackButton = ({ to }: { to?: string }) => {
 
   return (
     <Button
-      leftIcon={<IconChevronLeft />}
+      leftIcon={<IconChevronLeft size="1rem" />}
       color="gray"
       variant="outline"
+      size="xs"
       onClick={() => {
         if (to) {
           router.push(`/${to}`);
