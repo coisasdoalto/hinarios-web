@@ -1,10 +1,17 @@
 import { ActionIcon, Avatar, Group } from '@mantine/core';
 import { IconLogin, IconLogout } from '@tabler/icons';
+import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { signInWithGoogle, signOut } from '../../firebase/web/auth';
 import { useUser } from '../../hooks/useUser';
 
 function LoginButton() {
   const user = useUser();
+
+  const isLoginEnabled = useFeatureFlagEnabled('login');
+
+  if (!isLoginEnabled) {
+    return null;
+  }
 
   if (!user) {
     return (
