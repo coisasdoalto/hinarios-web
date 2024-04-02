@@ -22,6 +22,10 @@ import Search from '../Search/Search';
 import VerticalNavigation from '../VerticalNavigation/VerticalNavigation';
 
 async function persist(onPersisted: (result: any) => void) {
+  if (navigator.storage && navigator.storage.persist) {
+    await navigator.storage.persist();
+  }
+
   // Request persistent storage for site
   if (navigator.storage && navigator.storage.persisted) {
     const isPersisted = await navigator.storage.persisted();
@@ -49,9 +53,9 @@ export default function AppShell({ children }: PropsWithChildren) {
 
   const [persistedResult, setPersistedResult] = useState(null);
 
-  useEffect(() => {
-    persist(setPersistedResult);
-  }, []);
+  // useEffect(() => {
+  //   persist(setPersistedResult);
+  // }, []);
 
   return (
     <MantineAppShell
@@ -121,6 +125,7 @@ export default function AppShell({ children }: PropsWithChildren) {
       }
     >
       <pre>result: {JSON.stringify(persistedResult)}</pre>
+      <button onClick={() => persist(setPersistedResult)}>Persist</button>
 
       <Container px={0} py={16}>
         {children}

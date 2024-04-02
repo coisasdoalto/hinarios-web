@@ -19,6 +19,7 @@ installSerwist({
 
 self.addEventListener('install', async (event) => {
   console.log('installed');
+  console.log({ storage: navigator.storage });
   if (navigator.storage && navigator.storage.persist) {
     const isPersisted = await navigator.storage.persist();
     console.log(`[SW] Persisted storage granted: ${isPersisted}`);

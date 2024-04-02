@@ -17,7 +17,7 @@ export default async (phase, { defaultConfig }) => {
     swSrc: './sw.ts',
     swDest: 'public/sw.js',
     maximumFileSizeToCacheInBytes: 7355608,
-    disable: phase !== PHASE_PRODUCTION_BUILD,
+    disable: phase === PHASE_PRODUCTION_BUILD,
     additionalPrecacheEntries: [
       { url: '/sobre/', revision },
       ...pathsForPrecache.map((url) => ({ url, revision })),
