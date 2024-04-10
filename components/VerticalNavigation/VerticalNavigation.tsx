@@ -1,15 +1,21 @@
 import { Box, Divider, NavLink } from '@mantine/core';
-import { IconBooks, IconHome, IconInfoSquare } from '@tabler/icons';
+import { IconBookmarks, IconBooks, IconHome, IconInfoSquare } from '@tabler/icons';
 import Link from 'next/link';
+import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { useHymnBooks } from '../../context/HymnBooks';
+import { useUser } from '../../hooks/useUser';
 import { DarkModeToggle } from './DarkModeToggle';
 
 function VerticalNavigation({ onNavigation }: { onNavigation: () => void }) {
   const [hymnBooks] = useHymnBooks();
 
+  const user = useUser();
+  const isBookmarksEnabled = useFeatureFlagEnabled('bookmarks');
+
+  const shouldShowBookmarksLink = user && isBookmarksEnabled;
+
   return (
     <Box>
-      {/* <NavLink label="Favoritos" icon={<IconBookmarks size={16} stroke={1.5} />} /> */}
       <NavLink
         label="Início"
         icon={<IconHome size={16} stroke={1.5} />}
@@ -17,6 +23,16 @@ function VerticalNavigation({ onNavigation }: { onNavigation: () => void }) {
         href="/"
         onClick={onNavigation}
       />
+
+      {shouldShowBookmarksLink && (
+        <NavLink
+          label="Favoritos"
+          icon={<IconBookmarks size={16} stroke={1.5} />}
+          component={Link}
+          href="/favoritos"
+          onClick={onNavigation}
+        />
+      )}
 
       <NavLink
         label="Hinários"

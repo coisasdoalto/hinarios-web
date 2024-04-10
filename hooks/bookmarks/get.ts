@@ -28,7 +28,5 @@ export function useGetBookmarks() {
 
       return userData?.data.bookmarks;
     },
-    enabled: Boolean(user),
-    placeholderData: [],
   });
 }

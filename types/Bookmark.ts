@@ -1,5 +1,7 @@
+import { HymnBookSlug } from './HymnBooks';
+
 export type Bookmark = {
   id: number;
-  hymnBook: string;
+  hymnBook: HymnBookSlug;
   slug: string;
 };
