@@ -73,6 +73,7 @@ const search = (router: NextRouter) => (query: string) => {
     const href = `/${doc.hymnBook.slug}/${doc.slug}`;
 
     return {
+      id: href,
       title: doc.title,
       description: `${doc.body.slice(0, 90)}...`,
       onTrigger: () => router.push(href),
