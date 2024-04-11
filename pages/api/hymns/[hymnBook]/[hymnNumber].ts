@@ -13,6 +13,10 @@ const querySchema = z.object({
 });
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
   const query = querySchema.parse(req.query);
 
   const { hymnBook, hymnNumber } = query;
