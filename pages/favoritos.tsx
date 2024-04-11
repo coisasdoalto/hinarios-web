@@ -28,7 +28,7 @@ export default function Bookmarks() {
       <Space h="lg" />
 
       {bookmarks.map((bookmark) => (
-        <BookmarkListItem key={bookmark.id} bookmark={bookmark} />
+        <BookmarkListItem key={bookmark.number} bookmark={bookmark} />
       ))}
 
       {!isLoading && !hasBookmarks && <Text>Você ainda não tem hinos favoritos</Text>}

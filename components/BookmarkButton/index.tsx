@@ -7,14 +7,13 @@ import { useAddBookmark } from '../../hooks/bookmarks/add';
 import { useGetBookmarks } from '../../hooks/bookmarks/get';
 import { useRemoveBookmark } from '../../hooks/bookmarks/remove';
 import { useUser } from '../../hooks/useUser';
-import { HymnBookSlug } from '../../types/HymnBooks';
 
 export function BookmarkButton() {
   const router = useRouter();
 
   const hymnSlug = String(router.query.slug);
-  const hymnBook = String(router.query.hymnBook) as HymnBookSlug;
-  const hymnId = hymnSlug.split('-')[0];
+  const hymnBook = String(router.query.hymnBook);
+  const hymnNumber = hymnSlug.split('-')[0];
 
   const isBookmarksEnabled = useFeatureFlagEnabled('bookmarks');
 
@@ -29,7 +28,7 @@ export function BookmarkButton() {
 
   const handleClick = async () => {
     const bookmark = {
-      id: Number(hymnId),
+      number: Number(hymnNumber),
       slug: hymnSlug,
       hymnBook,
     };

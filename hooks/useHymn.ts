@@ -1,16 +1,19 @@
-import CorinhosECanticosDeSalvacao from '../hymnsData/corinhos-e-canticos-de-salvacao/index.json';
-import HinosECanticos from '../hymnsData/hinos-e-canticos/index.json';
-import HinosEspirituais from '../hymnsData/hinos-espirituais/index.json';
-import { HymnBookSlug } from '../types/HymnBooks';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { Hymn } from 'schemas/hymn';
+import { HymnBookInfo } from 'schemas/hymnBookInfo';
 
-export function useHymn({ hymnNumber, hymnBook }: { hymnNumber: number; hymnBook: HymnBookSlug }) {
-  if (hymnBook === 'hinos-espirituais') {
-    return HinosEspirituais.find((hymn) => hymn.number === hymnNumber);
-  }
+type UseHymnData = Pick<Hymn, 'title'> & {
+  hymnBook: HymnBookInfo;
+};
 
-  if (hymnBook === 'corinhos-e-canticos-de-salvacao') {
-    return CorinhosECanticosDeSalvacao.find((hymn) => hymn.number === hymnNumber);
-  }
+export function useHymn({ hymnNumber, hymnBook }: { hymnNumber: number; hymnBook: string }) {
+  return useQuery({
+    queryKey: ['hymns', hymnNumber, hymnBook],
+    queryFn: async () => {
+      const response = await axios.get<UseHymnData>(`/api/hymns/${hymnBook}/${hymnNumber}`);
 
-  return HinosECanticos.find((hymn) => hymn.number === hymnNumber);
+      return response.data;
+    },
+  });
 }
