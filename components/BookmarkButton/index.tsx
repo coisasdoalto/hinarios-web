@@ -13,7 +13,7 @@ export function BookmarkButton() {
 
   const hymnSlug = String(router.query.slug);
   const hymnBook = String(router.query.hymnBook);
-  const hymnId = hymnSlug.split('-')[0];
+  const hymnNumber = hymnSlug.split('-')[0];
 
   const isBookmarksEnabled = useFeatureFlagEnabled('bookmarks');
 
@@ -28,7 +28,7 @@ export function BookmarkButton() {
 
   const handleClick = async () => {
     const bookmark = {
-      id: Number(hymnId),
+      number: Number(hymnNumber),
       slug: hymnSlug,
       hymnBook,
     };

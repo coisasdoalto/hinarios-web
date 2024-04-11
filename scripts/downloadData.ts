@@ -5,7 +5,7 @@ import path from 'path';
 import ProgressBar from 'progress';
 import { storage } from '../firebase';
 
-const BASE_PATH = path.join('tmp', 'hymnsData');
+const BASE_PATH = path.join('hymnsData');
 
 async function downloadData() {
   const bucket = storage.bucket();

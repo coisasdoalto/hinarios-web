@@ -1,5 +1,5 @@
 export type Bookmark = {
-  id: number;
+  number: number;
   hymnBook: string;
   slug: string;
 };

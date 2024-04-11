@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 
 import { db } from '../../firebase/web/database';
-import { Bookmark } from '../../types/Bookmark';
+import { Bookmark } from '../../types/database/Bookmark';
 import { useUser } from '../useUser';
 
 export function useRemoveBookmark() {

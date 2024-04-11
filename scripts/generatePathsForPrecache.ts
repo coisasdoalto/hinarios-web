@@ -1,4 +1,5 @@
-import { writeFile } from 'fs/promises';
+import { existsSync } from 'fs';
+import { mkdir, writeFile } from 'fs/promises';
 import path from 'path';
 import getHymnBooks from '../data/getHymnBooks';
 import getHymnsIndex from '../data/getHymnsIndex';
@@ -19,6 +20,10 @@ async function generatePathsForPrecache() {
       })
     )
   ).flat();
+
+  if (!existsSync('tmp')) {
+    await mkdir('tmp');
+  }
 
   await writeFile(path.join('tmp', 'pathsForPrecache.json'), JSON.stringify(allPaths, null, 2));
 

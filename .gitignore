@@ -41,6 +41,7 @@ storybook-static.env*
 public/hymnBooks.json
 /tmp
 /search
+/hymnsData
 
 # Google Credentials
 cert.json
