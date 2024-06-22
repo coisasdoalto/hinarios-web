@@ -1,5 +1,5 @@
 import { Box, Divider, NavLink } from '@mantine/core';
-import { IconBookmarks, IconBooks, IconHome, IconInfoSquare } from '@tabler/icons';
+import { IconBookmarks, IconBooks, IconChecklist, IconHome, IconInfoSquare } from '@tabler/icons';
 import Link from 'next/link';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { useHymnBooks } from '../../context/HymnBooks';
@@ -56,6 +56,14 @@ function VerticalNavigation({ onNavigation }: { onNavigation: () => void }) {
         icon={<IconInfoSquare size={16} stroke={1.5} />}
         component={Link}
         href="/sobre"
+        onClick={onNavigation}
+      />
+
+      <NavLink
+        label="Política de privacidade"
+        icon={<IconChecklist size={16} stroke={1.5} />}
+        component={Link}
+        href="/politica-de-privacidade"
         onClick={onNavigation}
       />
 

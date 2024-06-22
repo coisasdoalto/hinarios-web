@@ -1,5 +1,7 @@
 import { Space, TypographyStylesProvider } from '@mantine/core';
 
+import { CONTACT_EMAIL } from 'contants';
+
 export default function Home() {
   return (
     <>
@@ -14,7 +16,7 @@ export default function Home() {
 
         <p>
           Caso queira enviar um hinário, hino, correção, áudio, sugestões, ou tratar qualquer outro
-          assunto, envie um e-mail para pablo.dinella@gmail.com.
+          assunto, envie um e-mail para {CONTACT_EMAIL}.
         </p>
       </TypographyStylesProvider>
     </>
