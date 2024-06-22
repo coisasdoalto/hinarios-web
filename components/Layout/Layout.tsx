@@ -22,6 +22,8 @@ import Search from '../Search/Search';
 import VerticalNavigation from '../VerticalNavigation/VerticalNavigation';
 
 async function persist(onPersisted: (result: any) => void) {
+  await Notification.requestPermission();
+
   if (navigator.storage && navigator.storage.persist) {
     await navigator.storage.persist();
   }
