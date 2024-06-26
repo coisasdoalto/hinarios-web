@@ -19,7 +19,9 @@ export default async (phase, { defaultConfig }) => {
     maximumFileSizeToCacheInBytes: 7355608,
     disable: phase !== PHASE_PRODUCTION_BUILD,
     additionalPrecacheEntries: [
+      { url: '/', revision },
       { url: '/sobre/', revision },
+      { url: '/politica-de-privacidade/', revision },
       ...pathsForPrecache.map((url) => ({ url, revision })),
     ],
   });
