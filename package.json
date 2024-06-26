@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "prebuild": "rm -rf ./hymnsData && yarn data:download && yarn generate:index && yarn generate:searchIndex && yarn generate:pathsForPrecache",
-    "build": "yarn prebuild && next build",
+    "build": "next build",
     "build:only": "next build",
     "analyze": "ANALYZE=true next build",
     "start": "next start",
