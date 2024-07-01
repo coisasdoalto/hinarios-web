@@ -37,6 +37,7 @@ export default async (phase, { defaultConfig }) => {
     experimental: { scrollRestoration: true },
     trailingSlash: true,
     generateBuildId: () => buildId,
+    productionBrowserSourceMaps: true,
   };
 
   return withSerwist(nextConfig);
