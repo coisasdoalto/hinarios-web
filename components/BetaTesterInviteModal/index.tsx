@@ -11,22 +11,27 @@ const formSchema = z.object({
 });
 
 export function BetaTesterInviteModal() {
-  const [isInvited, setIsInvited] = useLocalStorage({
-    key: 'beta-tester-invited',
-    defaultValue: false,
-    deserialize: (value) => value === 'true',
-  });
-
   const os = useOs();
 
-  const [opened, setOpened] = useState(false);
+  const [opened, setOpened] = useState(() => {
+    const isInvited = localStorage.getItem('beta-tester-invited') == 'true';
 
-  const [formError, setFormError] = useState('');
+    const isMobile = os === 'android' || os === 'ios';
+    const isAndroid = os === 'android';
+
+    if (isMobile && !isAndroid) return false;
+
+    return !isInvited;
+  });
+
+  const setIsInvited = () => localStorage.setItem('beta-tester-invited', 'true');
 
   function handleClose() {
     setOpened(false);
-    setIsInvited(true);
+    setIsInvited();
   }
+
+  const [formError, setFormError] = useState('');
 
   async function submitHandler(event: FormEvent) {
     event.preventDefault();
@@ -49,29 +54,12 @@ export function BetaTesterInviteModal() {
       await supabase.from('beta_testers').insert({
         email,
       });
-    } finally {
       posthog.capture('beta-tester-signed-up');
+    } finally {
       setOpened(false);
-      setIsInvited(true);
+      setIsInvited();
     }
   }
-
-  useEffect(() => {
-    setOpened(() => {
-      const isMobile = os === 'android' || os === 'ios';
-      const isAndroid = os === 'android';
-
-      if (isMobile && !isAndroid) return false;
-
-      return !isInvited;
-    });
-  }, [isInvited, os]);
-
-  useEffect(() => {
-    if (opened) {
-      posthog.capture('beta-tester-modal-viewed');
-    }
-  }, [opened]);
 
   return (
     <>
