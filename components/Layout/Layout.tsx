@@ -20,6 +20,8 @@ import { useHymnBooks } from '../../context/HymnBooks';
 import LoginMenu from '../LoginMenu';
 import Search from '../Search/Search';
 import VerticalNavigation from '../VerticalNavigation/VerticalNavigation';
+import { BetaTesterInviteModal } from 'components/BetaTesterInviteModal';
+import { useFeatureFlagEnabled } from 'posthog-js/react';
 
 export default function AppShell({ children }: PropsWithChildren) {
   const theme = useMantineTheme();
@@ -33,6 +35,8 @@ export default function AppShell({ children }: PropsWithChildren) {
   const [hymnBooks] = useHymnBooks();
 
   const hymnBook = hymnBooks?.find((item) => item.slug === router.query.hymnBook);
+
+  const shouldUseBetaTesterInviteModal = useFeatureFlagEnabled('beta-tester-invite-modal');
 
   useEffect(() => {
     setFeedbackEnabled(false);
@@ -135,7 +139,7 @@ export default function AppShell({ children }: PropsWithChildren) {
         </form>
       </Container>
 
-      {/* <BetaTesterInviteModal /> */}
+      {shouldUseBetaTesterInviteModal && <BetaTesterInviteModal />}
     </MantineAppShell>
   );
 }
