@@ -27,7 +27,8 @@
   ],
   "icons": [
     {
-      "src": "/favicon.svg"
+      "src": "/favicon.svg",
+      "sizes": "16x16"
     },
     {
       "src": "icons/windows11/SmallTile.scale-100.png",
