@@ -10,11 +10,19 @@ const formSchema = z.object({
   email: z.string().email('Insira um e-mail válido'),
 });
 
-export function BetaTesterInviteModal() {
+export function useBetaTesterInviteModal() {
   const os = useOs();
 
+  const localStorageRef = (() => {
+    if (typeof window !== 'undefined') {
+      return localStorage;
+    }
+
+    return null;
+  })();
+
   const [opened, setOpened] = useState(() => {
-    const isInvited = localStorage.getItem('beta-tester-invited') == 'true';
+    const isInvited = localStorageRef?.getItem('beta-tester-invited') == 'true';
 
     const isMobile = os === 'android' || os === 'ios';
     const isAndroid = os === 'android';
@@ -24,13 +32,37 @@ export function BetaTesterInviteModal() {
     return !isInvited;
   });
 
-  const setIsInvited = () => localStorage.setItem('beta-tester-invited', 'true');
+  const setIsInvited = () => localStorageRef?.setItem('beta-tester-invited', 'true');
 
   function handleClose() {
     setOpened(false);
     setIsInvited();
   }
 
+  return {
+    showBetaTesterInviteModal: () => {
+      setOpened(true);
+    },
+
+    controls: {
+      opened,
+      handleClose,
+      setOpened,
+      setIsInvited,
+    },
+  };
+}
+
+export function BetaTesterInviteModal({
+  controls: { opened, handleClose, setOpened, setIsInvited },
+}: {
+  controls: {
+    opened: boolean;
+    handleClose: () => void;
+    setOpened: (state: boolean) => void;
+    setIsInvited: () => void;
+  };
+}) {
   const [formError, setFormError] = useState('');
 
   async function submitHandler(event: FormEvent) {
