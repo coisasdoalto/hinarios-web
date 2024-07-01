@@ -1,4 +1,5 @@
 import {
+  Anchor,
   Breadcrumbs,
   Burger,
   Button,
@@ -8,6 +9,7 @@ import {
   AppShell as MantineAppShell,
   MediaQuery,
   Navbar,
+  Notification,
   TextInput,
   Textarea,
   useMantineTheme,
@@ -20,8 +22,10 @@ import { useHymnBooks } from '../../context/HymnBooks';
 import LoginMenu from '../LoginMenu';
 import Search from '../Search/Search';
 import VerticalNavigation from '../VerticalNavigation/VerticalNavigation';
-import { BetaTesterInviteModal } from 'components/BetaTesterInviteModal';
+import { BetaTesterInviteModal, useBetaTesterInviteModal } from 'components/BetaTesterInviteModal';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
+import { IconInfoCircle } from '@tabler/icons';
+import { IconInfoCircleFilled, IconInfoSmall } from '@tabler/icons-react';
 
 export default function AppShell({ children }: PropsWithChildren) {
   const theme = useMantineTheme();
@@ -41,6 +45,8 @@ export default function AppShell({ children }: PropsWithChildren) {
   useEffect(() => {
     setFeedbackEnabled(false);
   }, []);
+
+  const { showBetaTesterInviteModal, controls } = useBetaTesterInviteModal();
 
   return (
     <MantineAppShell
@@ -139,7 +145,20 @@ export default function AppShell({ children }: PropsWithChildren) {
         </form>
       </Container>
 
-      {shouldUseBetaTesterInviteModal && <BetaTesterInviteModal />}
+      {shouldUseBetaTesterInviteModal && (
+        <Container size="xs" mt="xl">
+          <Notification
+            title="hinarios.app na Play Store!"
+            disallowClose
+            icon={<IconInfoSmall size={36} />}
+          >
+            Ajude-nos a publicar este site na loja de aplicativos do Android,{' '}
+            <Anchor onClick={showBetaTesterInviteModal}>clique para saber mais</Anchor>.
+          </Notification>
+
+          <BetaTesterInviteModal controls={controls} />
+        </Container>
+      )}
     </MantineAppShell>
   );
 }
