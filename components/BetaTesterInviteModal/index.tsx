@@ -52,7 +52,7 @@ export function BetaTesterInviteModal() {
 
     try {
       await supabase.from('beta_testers').insert({
-        email,
+        email: email.toLowerCase(),
       });
       posthog.capture('beta-tester-signed-up');
     } finally {
