@@ -20,6 +20,7 @@ import { useHymnBooks } from '../../context/HymnBooks';
 import LoginMenu from '../LoginMenu';
 import Search from '../Search/Search';
 import VerticalNavigation from '../VerticalNavigation/VerticalNavigation';
+import { BetaTesterInviteModal } from 'components/BetaTesterInviteModal';
 
 export default function AppShell({ children }: PropsWithChildren) {
   const theme = useMantineTheme();
@@ -135,7 +136,7 @@ export default function AppShell({ children }: PropsWithChildren) {
         </form>
       </Container>
 
-      {/* <BetaTesterInviteModal /> */}
+      <BetaTesterInviteModal />
     </MantineAppShell>
   );
 }
