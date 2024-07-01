@@ -83,6 +83,7 @@ export function BetaTesterInviteModal() {
             placeholder="seu-email@exemplo.com"
             mt="md"
             error={formError}
+            type="email"
           />
           <Button type="submit" mt="md" fullWidth>
             Enviar
