@@ -6,10 +6,12 @@ import {
   Container,
   Group,
   Header,
+  Loader,
   AppShell as MantineAppShell,
   MediaQuery,
   Navbar,
   Notification,
+  Text,
   TextInput,
   Textarea,
   useMantineTheme,
@@ -22,10 +24,10 @@ import { useHymnBooks } from '../../context/HymnBooks';
 import LoginMenu from '../LoginMenu';
 import Search from '../Search/Search';
 import VerticalNavigation from '../VerticalNavigation/VerticalNavigation';
-import { BetaTesterInviteModal, useBetaTesterInviteModal } from 'components/BetaTesterInviteModal';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
-import { IconInfoCircle } from '@tabler/icons';
-import { IconInfoCircleFilled, IconInfoSmall } from '@tabler/icons-react';
+import { IconInfoSmall } from '@tabler/icons-react';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from 'supabase';
 
 export default function AppShell({ children }: PropsWithChildren) {
   const theme = useMantineTheme();
@@ -46,7 +48,12 @@ export default function AppShell({ children }: PropsWithChildren) {
     setFeedbackEnabled(false);
   }, []);
 
-  const { showBetaTesterInviteModal, controls } = useBetaTesterInviteModal();
+  const { data, isLoading } = useQuery({
+    queryKey: ['betaTestersCount'],
+    queryFn: async () => await supabase.from('beta_testers_count').select().maybeSingle(),
+  });
+
+  const betaTestersCount = data?.data?.beta_testers_count || 'algumas';
 
   return (
     <MantineAppShell
@@ -147,16 +154,24 @@ export default function AppShell({ children }: PropsWithChildren) {
 
       {shouldUseBetaTesterInviteModal && (
         <Container size="xs" mt="xl">
-          <Notification
-            title="hinarios.app na Play Store!"
-            disallowClose
-            icon={<IconInfoSmall size={36} />}
-          >
-            Ajude-nos a publicar este site na loja de aplicativos do Android,{' '}
-            <Anchor onClick={showBetaTesterInviteModal}>clique para saber mais</Anchor>.
-          </Notification>
+          <Notification disallowClose icon={<IconInfoSmall size={36} />}>
+            <Text mb={10}>
+              Já temos {isLoading ? <Loader color="blue" size="xs" /> : betaTestersCount} pessoas
+              testando o app Android! Precisamos de 20 no total para podermos publicar o app a todos
+              na Play Store.
+            </Text>
 
-          <BetaTesterInviteModal controls={controls} />
+            <Text>
+              Para se inscrever, ou se você já se inscreveu e não recebeu o link para instalação,
+              fale com o Pablo no whatsapp:{' '}
+              <Anchor
+                href="https://wa.me/5511977258561/?text=Ol%C3%A1%2C%20quero%20testar%20o%20hinarios.app%20no%20Android%0A"
+                target="_blank"
+              >
+                11 97725-8561
+              </Anchor>
+            </Text>
+          </Notification>
         </Container>
       )}
     </MantineAppShell>
