@@ -28,6 +28,7 @@ import { useFeatureFlagEnabled } from 'posthog-js/react';
 import { IconInfoSmall } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from 'supabase';
+import { BetaTesterInviteModal, useBetaTesterInviteModal } from 'components/BetaTesterInviteModal';
 
 export default function AppShell({ children }: PropsWithChildren) {
   const theme = useMantineTheme();
@@ -54,6 +55,8 @@ export default function AppShell({ children }: PropsWithChildren) {
   });
 
   const betaTestersCount = data?.data?.beta_testers_count || 'algumas';
+
+  const { showBetaTesterInviteModal, controls } = useBetaTesterInviteModal();
 
   return (
     <MantineAppShell
@@ -169,9 +172,12 @@ export default function AppShell({ children }: PropsWithChildren) {
                 target="_blank"
               >
                 11 97725-8561
-              </Anchor>
+              </Anchor>{' '}
+              ou adicione o seu e-mail <Anchor onClick={showBetaTesterInviteModal}>aqui</Anchor>.
             </Text>
           </Notification>
+
+          <BetaTesterInviteModal controls={controls} />
         </Container>
       )}
     </MantineAppShell>
