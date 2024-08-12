@@ -54,3 +54,4 @@ cert.json
 **/public/sw.js.map
 **/public/worker-*.js
 **/public/worker-*.js.map
+supabase/.temp/
