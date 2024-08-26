@@ -15,6 +15,7 @@ import { Fragment, useEffect, useState } from 'react';
 
 import { z } from 'zod';
 
+import { AddBreakLine } from 'components/AddBreakLine';
 import BackButton from '../../components/BackButton/BackButton';
 import { BookmarkButton } from '../../components/BookmarkButton';
 import { useHymnBooks, useHymnBooksSave } from '../../context/HymnBooks';
@@ -23,17 +24,6 @@ import getHymnsIndex from '../../data/getHymnsIndex';
 import getParsedData from '../../data/getParsedData';
 import { Hymn, hymnSchema } from '../../schemas/hymn';
 import { HymnBook } from '../../schemas/hymnBook';
-
-const AddBreakLine = ({ children }: { children: string }) => (
-  <>
-    {children.split('\n').map((line, index) => (
-      <Fragment key={index}>
-        {line}
-        <br />
-      </Fragment>
-    ))}
-  </>
-);
 
 const validateFontSize = (fontSize: string): fontSize is MantineSize => /md|lg|xl/.test(fontSize);
 
