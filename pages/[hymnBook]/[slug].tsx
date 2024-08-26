@@ -15,7 +15,7 @@ import { Fragment, useEffect, useState } from 'react';
 
 import { z } from 'zod';
 
-import { AddBreakLine } from 'components/AddBreakLine';
+import { HymnTextWithVariations } from 'components/HymnTextWithVariations';
 import BackButton from '../../components/BackButton/BackButton';
 import { BookmarkButton } from '../../components/BookmarkButton';
 import { useHymnBooks, useHymnBooksSave } from '../../context/HymnBooks';
@@ -52,7 +52,7 @@ export default function HymnView(props: AppProps & PageProps) {
 
   const chorusComponent = chorus && (
     <Text size={fontSize} mt={16} pl={40} italic>
-      <AddBreakLine>{chorus}</AddBreakLine>
+      <HymnTextWithVariations>{chorus}</HymnTextWithVariations>
     </Text>
   );
 
@@ -103,7 +103,7 @@ export default function HymnView(props: AppProps & PageProps) {
           {/* <Text>{stanza.number}.</Text> */}
           <Text size={fontSize} mt={16} pl={20} style={{ position: 'relative' }}>
             <span style={{ position: 'absolute', left: 0 }}>{stanza.number}.</span>
-            <AddBreakLine>{stanza.text}</AddBreakLine>
+            <HymnTextWithVariations>{stanza.text}</HymnTextWithVariations>
           </Text>
 
           {index === 0 && chorus && chorusComponent}
