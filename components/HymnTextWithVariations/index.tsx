@@ -31,7 +31,7 @@ function Variation({ options }: { options: string[] }) {
   // TODO: Save preferences
 
   const [selection, setSelection] = useState(options[0]);
-  const [opened, { close, open, toggle }] = useDisclosure(false);
+  const [opened, { close, toggle }] = useDisclosure(false);
 
   function handleSelect(option: string) {
     setSelection(option);
