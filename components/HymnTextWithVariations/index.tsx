@@ -40,7 +40,7 @@ function Variation({ options }: { options: string[] }) {
   }
 
   return (
-    <Popover position="bottom" withArrow shadow="md" opened={opened} onChange={toggle}>
+    <Popover position="bottom" withArrow shadow="md" opened={opened} onChange={close}>
       <Popover.Target>
         <span>
           <Text
