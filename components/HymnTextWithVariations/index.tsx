@@ -46,13 +46,13 @@ function Variation({ options }: { options: string[] }) {
           display="inline"
           onClick={toggle}
           sx={{
-            textDecorationStyle: 'dotted',
+            fontStyle: 'italic',
             cursor: 'pointer',
+            borderBottom: '1px dotted'
           }}
           title="Ver variações"
-          underline
         >
-          {selection}
+          {selection}*
         </Text>
       </Popover.Target>
       <Popover.Dropdown>
