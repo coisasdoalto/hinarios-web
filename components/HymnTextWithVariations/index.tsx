@@ -1,5 +1,6 @@
 import { Button, Group, Popover, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { IconHandClick } from '@tabler/icons';
 import { AddBreakLine } from 'components/AddBreakLine';
 import { useState } from 'react';
 
@@ -41,19 +42,28 @@ function Variation({ options }: { options: string[] }) {
   return (
     <Popover position="bottom" withArrow shadow="md" opened={opened} onChange={toggle}>
       <Popover.Target>
-        <Text
-          role="button"
-          display="inline"
-          onClick={toggle}
-          sx={{
-            fontStyle: 'italic',
-            cursor: 'pointer',
-            borderBottom: '1px dotted'
-          }}
-          title="Ver variações"
-        >
-          {selection}*
-        </Text>
+        <span>
+          <Text
+            role="button"
+            display="inline"
+            onClick={toggle}
+            sx={{
+              fontStyle: 'italic',
+              cursor: 'pointer',
+              borderBottom: '1px dotted',
+            }}
+            title="Ver variações"
+          >
+            {selection}
+          </Text>
+          <IconHandClick
+            style={{
+              verticalAlign: 'middle',
+              marginLeft: 4,
+            }}
+            size={19}
+          />
+        </span>
       </Popover.Target>
       <Popover.Dropdown>
         <Group position="center">
