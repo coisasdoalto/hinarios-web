@@ -1,16 +1,15 @@
 import {
   Anchor,
+  Box,
   Breadcrumbs,
   Burger,
   Button,
   Container,
   Group,
   Header,
-  Loader,
   AppShell as MantineAppShell,
   MediaQuery,
   Navbar,
-  Notification,
   Text,
   TextInput,
   Textarea,
@@ -25,10 +24,6 @@ import LoginMenu from '../LoginMenu';
 import Search from '../Search/Search';
 import VerticalNavigation from '../VerticalNavigation/VerticalNavigation';
 import { useFeatureFlagEnabled } from 'posthog-js/react';
-import { IconInfoSmall } from '@tabler/icons-react';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from 'supabase';
-import { BetaTesterInviteModal, useBetaTesterInviteModal } from 'components/BetaTesterInviteModal';
 
 export default function AppShell({ children }: PropsWithChildren) {
   const theme = useMantineTheme();
@@ -48,15 +43,6 @@ export default function AppShell({ children }: PropsWithChildren) {
   useEffect(() => {
     setFeedbackEnabled(false);
   }, []);
-
-  const { data, isLoading } = useQuery({
-    queryKey: ['betaTestersCount'],
-    queryFn: async () => await supabase.from('beta_testers_count').select().maybeSingle(),
-  });
-
-  const betaTestersCount = data?.data?.beta_testers_count || 'algumas';
-
-  const { showBetaTesterInviteModal, controls } = useBetaTesterInviteModal();
 
   return (
     <MantineAppShell
@@ -157,27 +143,27 @@ export default function AppShell({ children }: PropsWithChildren) {
 
       {shouldUseBetaTesterInviteModal && (
         <Container size="xs" mt="xl">
-          <Notification disallowClose icon={<IconInfoSmall size={36} />}>
-            <Text mb={10}>
-              Já temos {isLoading ? <Loader color="blue" size="xs" /> : betaTestersCount} pessoas
-              testando o app Android! Precisamos de 20 no total para podermos publicar o app a todos
-              na Play Store.
-            </Text>
+          <Box
+            sx={(theme) => ({
+              border: `1px solid ${
+                theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[4]
+              }`,
+              borderRadius: theme.radius.sm,
+              padding: theme.spacing.md,
+            })}
+          >
+            <Text>Graças à sua ajuda conseguimos publicar o app na Play Store!</Text>
 
             <Text>
-              Para se inscrever, ou se você já se inscreveu e não recebeu o link para instalação,
-              fale com o Pablo no whatsapp:{' '}
               <Anchor
-                href="https://wa.me/5511977258561/?text=Ol%C3%A1%2C%20quero%20testar%20o%20hinarios.app%20no%20Android%0A"
+                href="https://play.google.com/store/apps/details?id=app.hinarios.twa"
                 target="_blank"
               >
-                11 97725-8561
+                Clique aqui
               </Anchor>{' '}
-              ou adicione o seu e-mail <Anchor onClick={showBetaTesterInviteModal}>aqui</Anchor>.
+              para instalar.
             </Text>
-          </Notification>
-
-          <BetaTesterInviteModal controls={controls} />
+          </Box>
         </Container>
       )}
     </MantineAppShell>
