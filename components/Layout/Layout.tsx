@@ -133,6 +133,8 @@ export default function AppShell({ children }: PropsWithChildren) {
 
               <TextInput label="Contato (opcional)" placeholder="email ou whats" name="contact" />
 
+              <TextInput type="hidden" name="page_path" value={router.asPath} />
+
               <Group position="right" mt="md">
                 <Button type="submit">Enviar</Button>
               </Group>
