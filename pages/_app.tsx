@@ -18,6 +18,16 @@ if (typeof window !== 'undefined') {
     capture_pageview: process.env.NODE_ENV === 'production',
     capture_performance: process.env.NODE_ENV === 'production',
     capture_pageleave: process.env.NODE_ENV === 'production',
+    bootstrap: {
+      featureFlags: {
+        login: false,
+        bookmarks: false,
+      },
+    },
+  });
+
+  posthog.setPersonPropertiesForFlags({
+    environment: process.env.NODE_ENV,
   });
 }
 
