@@ -1,5 +1,6 @@
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
+import { usePostHog } from 'posthog-js/react';
 import { useEffect, useState } from 'react';
 
 import { auth } from '../firebase/web';
@@ -8,9 +9,17 @@ export function useUser() {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
+  const posthog = usePostHog();
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (authUser) => {
       setUser(authUser);
+
+      if (!authUser) return posthog.reset();
+
+      posthog.identify(authUser.uid, {
+        email: authUser.email,
+      });
     });
 
     return () => unsubscribe();
